@@ -5,17 +5,38 @@
 
 #include "SpaceInvader.h"
 
-SpaceInvader::SpaceInvader() : done(false), last_frame_ticks(0.0f), attack_interval(1.5f), move_interval(3.0f), game_won(false), game_state(TITLE_SCREEN), player(new Entity(0.0f, -7.5f, 1.0f, 2.0f, PLAYER))
-{
-    setup();
-}
+SpaceInvader::SpaceInvader() : 
+    done(false),
+    last_frame_ticks(0.0f),
+    attack_interval(1.5f),
+    move_interval(3.0f),
+    game_won(false),
+    game_state(TITLE_SCREEN),
+    player(new Entity(0.0f, -7.5f, 1.0f, 2.0f, PLAYER))
+    { setup(); }
 
-SpaceInvader::~SpaceInvader() {}
+SpaceInvader::~SpaceInvader()
+{
+    delete player;
+    for (Entity *e : invaders)
+    {
+        e = nullptr;
+        delete e;
+    }
+    invaders.clear();
+    for (Bullet *b : bullets)
+    {
+        b = nullptr;
+        delete b;
+    }
+    bullets.clear();
+}
 
 void SpaceInvader::setup()
 {
     SDL_Init(SDL_INIT_VIDEO);
-    display_window = SDL_CreateWindow("Assignment 3 - Sergey Smirnov", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL);
+    display_window = SDL_CreateWindow("Assignment 3 - Sergey Smirnov", SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(display_window);
     SDL_GL_MakeCurrent(display_window, context);
 #ifdef _WINDOWS
@@ -39,8 +60,8 @@ void SpaceInvader::setup()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    font_tex_id = utilities.LoadRGBATexture("font1.png");
-    bullet_tex_id = utilities.LoadRGBTexture("chartreuse.png");
+    font_tex_id = utilities.LoadRGBATexture("partly_roboto.png");
+    bullet_tex_id = utilities.LoadRGBTexture("brightblue.png");
     invaders_tex_id = utilities.LoadRGBATexture("invaders.png");
     player_tex_id = utilities.LoadRGBATexture("ship.png");
 
@@ -93,7 +114,9 @@ void SpaceInvader::process_events(float elapsed)
         case TITLE_SCREEN:
             if (event.type == SDL_KEYDOWN)
             {
-                if (event.key.keysym.scancode == SDL_SCANCODE_RETURN || event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+                if (event.key.keysym.scancode == SDL_SCANCODE_RETURN ||
+                    event.key.keysym.scancode == SDL_SCANCODE_SPACE ||
+                    event.key.keysym.scancode == SDL_SCANCODE_RETURN2)
                     game_state = GAME;
             }
             break;
@@ -114,7 +137,9 @@ void SpaceInvader::process_events(float elapsed)
         case GAME_OVER:
             if (event.type == SDL_KEYDOWN)
             {
-                if (event.key.keysym.scancode == SDL_SCANCODE_RETURN || event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+                if (event.key.keysym.scancode == SDL_SCANCODE_RETURN || 
+                    event.key.keysym.scancode == SDL_SCANCODE_SPACE ||
+                    event.key.keysym.scancode == SDL_SCANCODE_RETURN2)
                 {
                     game_state = TITLE_SCREEN;
                     reset();
@@ -209,7 +234,9 @@ void SpaceInvader::check_for_collisions()
                     if (is_colliding_with_bullet(i, b))
                     {
                         i->die();
-                        bullets.erase(std::find(bullets.begin(), bullets.end(), b));
+                        b = nullptr;
+                        delete b;
+                        //bullets.erase(std::find(bullets.begin(), bullets.end(), b));
                         break;
                     }
                 }
@@ -222,7 +249,9 @@ void SpaceInvader::check_for_collisions()
                 if (is_colliding_with_bullet(player, b))
                 {
                     player->die();
-                    bullets.erase(std::find(bullets.begin(), bullets.end(), b));
+                    b = nullptr;
+                    delete b;
+                    //bullets.erase(std::find(bullets.begin(), bullets.end(), b));
                     game_state = GAME_OVER;
                     break;
                 }
@@ -233,9 +262,15 @@ void SpaceInvader::check_for_collisions()
 
 void SpaceInvader::clear_inactive_bullets()
 {
-    for (Bullet *b : bullets)
+    for (Bullet *b : bullets) {
         if (b->get_time_left() <= 0.0f)
-            bullets.erase(std::find(bullets.begin(), bullets.end(), b));
+        {
+            b = nullptr;
+            delete b;
+            //bullets.erase(std::find(bullets.begin(), bullets.end(), b));
+
+        }
+    }
 }
 
 void SpaceInvader::check_for_win()
@@ -266,14 +301,19 @@ void SpaceInvader::check_for_win()
 void SpaceInvader::render_title_screen()
 {
     model_matrix.identity();
-    model_matrix.Translate(-10.0f, 5.0f, 0.0f);
+    model_matrix.Translate(-9.0f, 5.0f, 0.0f);
     program->setModelMatrix(model_matrix);
-    utilities.DrawText(program, font_tex_id, "Space Invaders!", 3.0f, -1.5f);
+    utilities.DrawText(program, font_tex_id, "Space Invaders!", 3.0f, -1.6f);
 
     model_matrix.identity();
-    model_matrix.Translate(-7.0f, -3.0f, 0.0f);
+    model_matrix.Translate(-10.5f, 3.0f, 0.0f);
     program->setModelMatrix(model_matrix);
-    utilities.DrawText(program, font_tex_id, "Press Enter or Space to start.", 1.0f, -0.5f);
+    utilities.DrawText(program, font_tex_id, "NYU-Poly CS-UY 3113 Project - Sergey Smirnov", 1.0f, -0.5f);
+
+    model_matrix.identity();
+    model_matrix.Translate(-6.0f, -3.0f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_tex_id, "Press Enter or Space to start.", 1.0f, -0.55f);
 }
 
 void SpaceInvader::render_game()
@@ -301,7 +341,7 @@ void SpaceInvader::render()
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.14f, 0.215f, 0.309f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     switch (game_state)
     {

@@ -16,7 +16,7 @@ Entity::Entity()
 }
 
 Entity::Entity(float ht, float wd, float x, float y, EntityType t) :
-height(ht), width(wd), position_x(x), position_y(y), alive(true) {}
+height(ht), width(wd), position_x(x), position_y(y), alive(true), type(t) {}
 
 Entity::Entity(const Entity &e)
 {
