@@ -10,6 +10,8 @@ namespace Utilities
 
     // GENERAL UTILITIES
 
+    Utils::Utils() {}
+
     GLuint Utils::LoadRGBTexture(const char *img_path)
     {
         SDL_Surface* surface = IMG_Load(img_path);

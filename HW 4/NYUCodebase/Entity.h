@@ -12,7 +12,8 @@ enum EntityType
 {
     ENTITY_PLAYER,
     ENTITY_ENEMY,
-    ENTITY_COIN
+    ENTITY_COIN,
+    ENTITY_BLOCK
 };
 
 class Entity
@@ -49,6 +50,7 @@ protected:
 
 public:
     Entity();
+    Entity(float x, float y, float height, float width, bool static_entity, EntityType entity_type);
 
     void set_sprite(unsigned int texture_id, float u, float v, float width, float height, float size);
 
@@ -61,6 +63,10 @@ public:
     float get_acc_x() const;
     float get_acc_y() const;
     bool is_static();
+    bool is_standing();
+
+    void move_x(float vel);
+    void move_y(float vel);
 
     void Update(float elapsed);
     void Render(ShaderProgram *program, Matrix &model_matrix);

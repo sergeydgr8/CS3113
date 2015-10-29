@@ -57,16 +57,13 @@
     <None Include="fragment_textured.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\Xcode\NYUCodebase\chartreuse.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\..\Xcode\NYUCodebase\font1.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\Xcode\NYUCodebase\invaders.png">
+    <Image Include="george_0.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\Xcode\NYUCodebase\ship.png">
+    <Image Include="JnRTiles.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -36,6 +36,7 @@ namespace Utilities
     class Utils
     {
     public:
+        Utils();
         GLuint LoadRGBTexture(const char *img_path);
         GLuint LoadRGBATexture(const char *img_path);
         void DrawText(ShaderProgram *program, GLuint fontTexture, std::string text, float size, float spacing);
@@ -53,7 +54,7 @@ namespace Utilities
     public:
         SheetSprite();
         SheetSprite(unsigned int texture_id, float u, float v, float width, float height, float size);
-        void Draw(ShaderProgram *program, Matrix &model_matrix, float x = 0.0f, float y = 0.0f);
+        void Draw(ShaderProgram *program, Matrix &model_matrix, float x, float y);
     };
 }
 

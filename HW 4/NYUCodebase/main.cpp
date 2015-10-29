@@ -13,7 +13,7 @@ Assignment 4 - Platformer
 
 #include "Platformer.h"
 
-int main()
+int main(int argc, char *argv[])
 {
     Platformer game;
     while (!game.update_and_render())

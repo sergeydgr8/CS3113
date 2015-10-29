@@ -5,9 +5,9 @@
 
 #include "Entity.h"
 
-Entity::Entity()
-{
-}
+Entity::Entity() { }
+Entity::Entity(float x, float y, float height, float width, bool static_entity, EntityType entity_type) :
+    x(x), y(y), height(height), width(width), static_entity(static_entity), entity_type(entity_type) {}
 
 void Entity::set_sprite(unsigned int texture_id, float u, float v, float width, float height, float size)
 {
@@ -23,7 +23,11 @@ float Entity::get_vel_y() const { return velocity_y; }
 float Entity::get_acc_x() const { return acceleration_x; }
 float Entity::get_acc_y() const { return acceleration_y; }
 bool Entity::is_static() { return static_entity; }
+bool Entity::is_standing() { return collided_bottom; }
 bool Entity::is_colliding() { return (collided_top || collided_bottom || collided_left || collided_right); }
+
+void Entity::move_x(float vel) { velocity_x = vel; }
+void Entity::move_y(float vel) { velocity_y = vel; }
 
 void Entity::Update(float elapsed)
 {
