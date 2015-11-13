@@ -381,7 +381,7 @@ void SpaceInvader::render_game_over()
     else utilities.DrawText(program, font_tex_id, "You lose :(", 3.0f, -1.5f);
     
     model_matrix.identity();
-    model_matrix.Translate(-7  .0f, -4.0f, 0.0f);
+    model_matrix.Translate(-7.0f, -4.0f, 0.0f);
     program->setModelMatrix(model_matrix);
     utilities.DrawText(program, font_tex_id, "Press Enter or Space to continue.", 1.0f, -0.55f);
 }

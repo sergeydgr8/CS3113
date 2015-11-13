@@ -28,7 +28,7 @@ Entity::Entity(const Entity &e)
     this->alive = e.is_alive();
 }
 
-Entity::~Entity() { }
+//Entity::~Entity() { }
 
 float Entity::get_height() const { return height; }
 float Entity::get_width() const { return width; }

@@ -23,7 +23,7 @@ private:
     
 public:
     Entity();
-    ~Entity();
+    //~Entity();
     
     Entity(float ht, float wd, float x, float y, EntityType t);
     Entity(const Entity &e);
