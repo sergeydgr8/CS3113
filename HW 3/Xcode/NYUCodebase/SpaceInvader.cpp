@@ -6,14 +6,14 @@
 #include "SpaceInvader.h"
 
 SpaceInvader::SpaceInvader() :
-done(false),
-last_frame_ticks(0.0f),
-attack_interval(1.5f),
-move_interval(3.0f),
-game_won(false),
-game_state(TITLE_SCREEN),
-player(new Entity(0.0f, -7.5f, 1.0f, 2.0f, PLAYER))
-{ setup(); }
+    done(false),
+    last_frame_ticks(0.0f),
+    attack_interval(1.5f),
+    move_interval(3.0f),
+    game_won(false),
+    game_state(TITLE_SCREEN),
+    player(new Entity(0.0f, -7.5f, 1.0f, 2.0f, PLAYER))
+    { setup(); }
 
 SpaceInvader::~SpaceInvader()
 {
