@@ -13,7 +13,7 @@ GLuint Utils::LoadRGBTexture(const char *img_path)
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surface->w, surface->h, 0, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_BGR, surface->w, surface->h, 0, GL_BGR, GL_UNSIGNED_BYTE, surface->pixels);
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -31,7 +31,7 @@ GLuint Utils::LoadRGBATexture(const char *img_path)
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_BGRA, surface->w, surface->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, surface->pixels);
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -43,19 +43,19 @@ GLuint Utils::LoadRGBATexture(const char *img_path)
 
 void Utils::DrawText(ShaderProgram *program, GLuint fontTexture, std::string text, float size, float spacing)
 {
-    float texture_size = 1.0 / 16.0f;
+    float texture_size = 1.0/16.0f;
     std::vector<float> vertexData;
     std::vector<float> texCoordData;
-    for (int i = 0; i < text.size(); i++) {
+    for(int i=0; i < text.size(); i++) {
         float texture_x = (float)(((int)text[i]) % 16) / 16.0f;
         float texture_y = (float)(((int)text[i]) / 16) / 16.0f;
         vertexData.insert(vertexData.end(), {
-            ((size + spacing) * i) + (-0.5f * size), 0.5f * size,
-            ((size + spacing) * i) + (-0.5f * size), -0.5f * size,
-            ((size + spacing) * i) + (0.5f * size), 0.5f * size,
-            ((size + spacing) * i) + (0.5f * size), -0.5f * size,
-            ((size + spacing) * i) + (0.5f * size), 0.5f * size,
-            ((size + spacing) * i) + (-0.5f * size), -0.5f * size,
+            ((size+spacing) * i) + (-0.5f * size), 0.5f * size,
+            ((size+spacing) * i) + (-0.5f * size), -0.5f * size,
+            ((size+spacing) * i) + (0.5f * size), 0.5f * size,
+            ((size+spacing) * i) + (0.5f * size), -0.5f * size,
+            ((size+spacing) * i) + (0.5f * size), 0.5f * size,
+            ((size+spacing) * i) + (-0.5f * size), -0.5f * size,
         });
         texCoordData.insert(texCoordData.end(), {
             texture_x, texture_y,
@@ -64,8 +64,7 @@ void Utils::DrawText(ShaderProgram *program, GLuint fontTexture, std::string tex
             texture_x + texture_size, texture_y + texture_size,
             texture_x + texture_size, texture_y,
             texture_x, texture_y + texture_size,
-        });
-    }
+        }); }
     glUseProgram(program->programID);
     glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertexData.data());
     glEnableVertexAttribArray(program->positionAttribute);

@@ -16,7 +16,7 @@ Entity::Entity()
 }
 
 Entity::Entity(float ht, float wd, float x, float y, EntityType t) :
-height(ht), width(wd), position_x(x), position_y(y), alive(true), type(t) {}
+    height(ht), width(wd), position_x(x), position_y(y), alive(true) {}
 
 Entity::Entity(const Entity &e)
 {
@@ -63,11 +63,11 @@ void Entity::draw(GLuint texture_id, ShaderProgram *program, Matrix &model_matri
     float texture_coords[] =
     {
         0.0f, 1.0f,
-        1.0f, 0.0f,
         0.0f, 0.0f,
-        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 0.0f,
         1.0f, 1.0f,
-        1.0f, 0.0f
+        0.0f, 1.0f
     };
     
     glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, texture_coords);

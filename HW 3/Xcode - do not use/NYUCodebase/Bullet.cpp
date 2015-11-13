@@ -6,7 +6,7 @@
 #include "Bullet.h"
 
 Bullet::Bullet(float x, float y, EntityType src) : position_x(x),
-position_y(y), source_type(src), time_left(1.5f)
+    position_y(y), source_type(src), time_left(1.5f)
 {
     if (source_type == PLAYER)
         position_y += 1.0f;
@@ -48,11 +48,11 @@ void Bullet::draw(GLuint texture_id, ShaderProgram *program, Matrix &model_matri
     float texture_coords[] =
     {
         0.0f, 1.0f,
-        1.0f, 0.0f,
         0.0f, 0.0f,
-        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 0.0f,
         1.0f, 1.0f,
-        1.0f, 0.0f
+        0.0f, 1.0f
     };
     
     glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, texture_coords);
