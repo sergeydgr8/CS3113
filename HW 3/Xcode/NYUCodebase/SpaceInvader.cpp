@@ -65,7 +65,8 @@ void SpaceInvader::setup()
     invaders_tex_id = utilities.LoadRGBATexture("invaders.png");
     player_tex_id = utilities.LoadRGBATexture("ship.png");
     
-    make_invaders(invaders, 20);
+    //make_invaders(invaders, 20);
+    reset();
 }
 
 // assume there are multiples of 5 of invaders
@@ -75,9 +76,10 @@ void SpaceInvader::make_invaders(std::vector<Entity *> &invaders, int num_invade
     float x = -8.0f;
     float y = 8.0f;
     
+    invaders.push_back(new Entity(x, y, 1.0f, 1.0f, INVADER));
+    
     for (size_t i = 0; i < num_invaders; i++)
     {
-        invaders.push_back(new Entity(x, y, 1.0f, 1.0f, INVADER));
         x += 4.0f;
         
         // new row
@@ -86,6 +88,8 @@ void SpaceInvader::make_invaders(std::vector<Entity *> &invaders, int num_invade
             x = -8.0f;
             y -= 2.0f;
         }
+        
+        invaders.push_back(new Entity(x, y, 1.0f, 1.0f, INVADER));
     }
 }
 
@@ -257,6 +261,7 @@ void SpaceInvader::check_for_collisions()
             }
         }
     }
+    // no clue why foreach loop doesn't work
     /*for (Bullet *b : bullets)
     {
         if (b->get_type() == PLAYER)
@@ -366,7 +371,10 @@ void SpaceInvader::render_game()
     player->draw(player_tex_id, program, model_matrix);
     for (Entity *invader : invaders)
         if (invader->is_alive())
+        {
             utilities.DrawSpriteSheetSprite(program, model_matrix, 0, 4, 2, invaders_tex_id, invader->get_pos_x(), invader->get_pos_y());
+            invader->draw(invaders_tex_id, program, model_matrix);
+        }
     
     for (Bullet *bullet : bullets)
         bullet->draw(bullet_tex_id, program, model_matrix);
