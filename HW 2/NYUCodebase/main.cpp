@@ -37,7 +37,7 @@ struct Paddle
     float bottom;
 
     Paddle(float lt, float rt, float tp, float bt) : left(lt), right(rt), top(tp), bottom(bt) {}
-};
+};s
 
 struct Ball
 {
