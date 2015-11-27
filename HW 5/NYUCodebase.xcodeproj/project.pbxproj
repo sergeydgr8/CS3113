@@ -25,7 +25,8 @@
 		A58FAA531C08897A00E5FBB5 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58FAA521C08897A00E5FBB5 /* SDL2_mixer.framework */; };
 		A58FAA551C088A4600E5FBB5 /* left_hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = A58FAA541C088A4600E5FBB5 /* left_hit.wav */; };
 		A58FAA571C088A8400E5FBB5 /* right_hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = A58FAA561C088A8400E5FBB5 /* right_hit.wav */; };
-		A58FAA591C088D2700E5FBB5 /* Sound_Spread_-_02_-_Exploration.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A58FAA581C088D2700E5FBB5 /* Sound_Spread_-_02_-_Exploration.mp3 */; };
+		A58FAA591C088D2700E5FBB5 /* PONG_MUSIC.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A58FAA581C088D2700E5FBB5 /* PONG_MUSIC.mp3 */; };
+		A5CE25621C0892A000996D8A /* PONG_MUSIC.wav in Resources */ = {isa = PBXBuildFile; fileRef = A5CE25611C0892A000996D8A /* PONG_MUSIC.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,7 +57,8 @@
 		A58FAA521C08897A00E5FBB5 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2_mixer.framework; sourceTree = "<group>"; };
 		A58FAA541C088A4600E5FBB5 /* left_hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = left_hit.wav; sourceTree = "<group>"; };
 		A58FAA561C088A8400E5FBB5 /* right_hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = right_hit.wav; sourceTree = "<group>"; };
-		A58FAA581C088D2700E5FBB5 /* Sound_Spread_-_02_-_Exploration.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Sound_Spread_-_02_-_Exploration.mp3"; sourceTree = "<group>"; };
+		A58FAA581C088D2700E5FBB5 /* PONG_MUSIC.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = PONG_MUSIC.mp3; sourceTree = "<group>"; };
+		A5CE25611C0892A000996D8A /* PONG_MUSIC.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = PONG_MUSIC.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,7 +130,8 @@
 		6D5A86B419AE5C710066C1FD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A58FAA581C088D2700E5FBB5 /* Sound_Spread_-_02_-_Exploration.mp3 */,
+				A5CE25611C0892A000996D8A /* PONG_MUSIC.wav */,
+				A58FAA581C088D2700E5FBB5 /* PONG_MUSIC.mp3 */,
 				A58FAA541C088A4600E5FBB5 /* left_hit.wav */,
 				A58FAA561C088A8400E5FBB5 /* right_hit.wav */,
 				A58FAA501C08852600E5FBB5 /* chartreuse.png */,
@@ -229,13 +232,14 @@
 				6D5A86B819AE5C710066C1FD /* InfoPlist.strings in Resources */,
 				6DEF23C11B96CC2600BCE792 /* fragment.glsl in Resources */,
 				6DE9D2F11BA6AB8C002D599C /* fragment_textured.glsl in Resources */,
-				A58FAA591C088D2700E5FBB5 /* Sound_Spread_-_02_-_Exploration.mp3 in Resources */,
+				A58FAA591C088D2700E5FBB5 /* PONG_MUSIC.mp3 in Resources */,
 				A58FAA571C088A8400E5FBB5 /* right_hit.wav in Resources */,
 				A58FAA551C088A4600E5FBB5 /* left_hit.wav in Resources */,
 				6D5A86C619AE5C710066C1FD /* Images.xcassets in Resources */,
 				6D5A86BE19AE5C710066C1FD /* Credits.rtf in Resources */,
 				6DEF23C41B96CC2600BCE792 /* vertex.glsl in Resources */,
 				6DC7076A1BA7273500225B7D /* vertex_textured.glsl in Resources */,
+				A5CE25621C0892A000996D8A /* PONG_MUSIC.wav in Resources */,
 				A58FAA511C08852600E5FBB5 /* chartreuse.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

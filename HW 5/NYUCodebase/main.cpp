@@ -95,6 +95,9 @@ ShaderProgram setup()
     glewInit();
 #endif
     glViewport(0, 0, 1280, 720);
+    
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
+    
     return ShaderProgram(RESOURCE_FOLDER"vertex.glsl", RESOURCE_FOLDER"fragment.glsl");
 }
 
@@ -108,8 +111,6 @@ int main(int argc, char *argv[])
     Matrix view_matrix;
     Matrix projection_matrix;
     
-    //GLuint chartreuse_texture_ID = load_texture_rgb(RESOURCE_FOLDER"chartreuse.png");
-    
     projection_matrix.setOrthoProjection(-3.55f, 3.55f, -2.0f, 2.0f, -1.0f, 1.0f);
     
     SDL_Event event;
@@ -122,13 +123,13 @@ int main(int argc, char *argv[])
     
     Mix_Chunk *paddle_left_hit = Mix_LoadWAV(RESOURCE_FOLDER"left_hit.wav");
     Mix_Chunk *paddle_right_hit = Mix_LoadWAV(RESOURCE_FOLDER"right_hit.wav");
-    Mix_Music *music = Mix_LoadMUS(RESOURCE_FOLDER"Sound_Spread_-_02_-_Exploration.mp3");
+    Mix_Music *music = Mix_LoadMUS(RESOURCE_FOLDER"PONG_MUSIC.wav");
+    Mix_PlayMusic(music, -1);
     
     while (!done)
     {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        Mix_PlayMusic(music, -1);
         
         //Controls for the game
         while (SDL_PollEvent(&event))
