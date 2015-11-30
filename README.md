@@ -20,5 +20,17 @@ About half of it was written on a Windows PC with Visual Studio, the other half 
 *  HW3 - Space Invaders
 *  HW4 - Platformer game
 *  HW5 - Adding sound to a previous assignment
+*  Final - Smiley platformer (flash game spin-off) [WIP]
 
+### Final project specs.
+
+Here are the requirements for the project:
+*  Must have a title screen and proper states for game over, etc.
+*  Must have a way to quit the game.
+*  Must have music and sound effects.
+*  Must have at least 3 different levels or be procedurally generated.
+*  Must be either local multiplayer or have AI (or both!)
+*  Must have at least some animation or particle effects.
+
+I'll update this section later with details of the project I'm making.
 
