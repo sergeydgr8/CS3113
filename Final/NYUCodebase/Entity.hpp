@@ -34,11 +34,10 @@ private:
     
 public:
     Entity();
-    Entity(float ht, float wd, float x, float y, float vx,
+    Entity(float x, float y, float ht, float wd, float vx,
            float vy, float ax, float ay, float gr);
     
-    void set_sprite(GLuint texture_id, float scount_x, float scount_y,
-                    float w, float h, float sz);
+    void set_sprite(GLuint texture_id, float scount_x, float scount_y);
     
     float get_height();
     float get_width();

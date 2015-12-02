@@ -23,16 +23,15 @@ Entity::Entity()
     static_entity = true;
 }
 
-Entity::Entity(float ht, float wd, float x, float y, float vx,
+Entity::Entity(float x, float y, float ht, float wd, float vx,
                float vy, float ax, float ay, float gr) :
                height(ht), width(wd), pos_x(x), pos_y(y), velocity_x(vx),
                velocity_y(vy), acceleration_x(ax), acceleration_y(ay),
                gravity(gr) { friction = 5.0f; }
 
-void Entity::set_sprite(GLuint texture_id, float scount_x, float scount_y,
-                        float w, float h, float sz)
+void Entity::set_sprite(GLuint texture_id, float scount_x, float scount_y)
 {
-    sprite = Utilities::SheetSprite(texture_id, scount_x, scount_y, w, h, sz);
+    sprite = Utilities::SheetSprite(texture_id, scount_x, scount_y, width, height, height / 0.5f);
 }
 
 float Entity::get_height() { return height; }
