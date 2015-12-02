@@ -23,13 +23,13 @@ protected:
     float width;
     float pos_x;
     float pos_y;
+    float velocity_x;
+    float velocity_y;
     EntityType type;
     Utilities::SheetSprite sprite;
     bool static_entity;
     
 private:
-    float velocity_x;
-    float velocity_y;
     float acceleration_x;
     float acceleration_y;
     float gravity;
