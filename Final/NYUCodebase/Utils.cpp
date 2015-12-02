@@ -102,8 +102,8 @@ namespace Utilities
     {
         //glBindTexture(GL_TEXTURE_2D, texture_id);
         
-        float u = (float) ((index % (int)sprite_count_x) / sprite_count_x);
-        float v = (float) ((float) index / sprite_count_x) / sprite_count_y;
+        float u = (float) ((float) (index % (int) sprite_count_x) / sprite_count_x);
+        float v = (float) ((int) index / (int) sprite_count_x) / sprite_count_y;
         float sprite_width = 1.0f / sprite_count_x;
         float sprite_height = 1.0f / sprite_count_y;
         
