@@ -156,15 +156,36 @@ void Entity::render(ShaderProgram *program, Matrix &model_matrix, int index)
 }
 
 //
-// Block definitions
+// Enemy definitions
 //
 
-Block::Block(float x, float y, float ht, float wd, float vx, float vy)
+Enemy::Enemy(float x, float y, float ht, float wd, float vx, float vy)
 {
     pos_x = x;
     pos_y = y;
     height = ht;
     width = wd;
+    velocity_x = vx;
+    velocity_y = vy;
+}
+
+void Enemy::move(float vx, float vy)
+{
+    velocity_x = vx;
+    velocity_y = vy;
+}
+
+//
+// Block definitions
+//
+
+Block::Block(float x, float y, float ht, float wd, int bt, float vx, float vy)
+{
+    pos_x = x;
+    pos_y = y;
+    height = ht;
+    width = wd;
+    block_type = bt;
     velocity_x = vx;
     velocity_y = vy;
 }

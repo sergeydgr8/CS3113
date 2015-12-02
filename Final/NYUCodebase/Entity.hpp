@@ -48,7 +48,6 @@ public:
     float get_acc_x();
     float get_acc_y();
     float get_gravity();
-    bool is_static();
     
     void set_loc(float x, float y);
     bool is_colliding_with(Entity *e);
@@ -59,11 +58,21 @@ public:
     void render(ShaderProgram *program, Matrix &model_matrix, int index);
 };
 
-class Block : public Entity
+class Enemy : public Entity
 {
 public:
+    Enemy();
+    Enemy(float x, float y, float ht, float wd, float vx = 0.0f, float vy = 0.0f);
+    void move(float vx, float vy);
+};
+
+class Block : public Entity
+{
+private:
+    int block_type;
+public:
     Block();
-    Block(float x, float y, float ht, float wd, float vx = 0.0f, float vy = 0.0f);
+    Block(float x, float y, float ht, float wd, int bt, float vx = 0.0f, float vy = 0.0f);
 };
 
 class Coin : public Entity
