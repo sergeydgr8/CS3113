@@ -7,6 +7,7 @@
 
 Platformer::Platformer()
 {
+    cheatmode = true; // modify this to jump to a certain level from title screen
     window_setup();
     texture_setup();
 }
@@ -61,82 +62,6 @@ void Platformer::build_map()
         default:
             break;
     }
-}
-
-void Platformer::render_map()
-{
-    std::vector<float> vertex_data;
-    std::vector<float> tex_coord_data;
-    
-    int SPRITE_COUNT_X = 18;
-    int SPRITE_COUNT_Y = 1;
-    
-    int counter = 0;
-    
-    for (size_t y = 0; y < map_height; y++)
-    {
-        for (size_t x = 0; x < map_width; x++)
-        {
-            if ((int) level_data[y][x] != 0)
-            {
-                float u = (float) (((int) level_data[y][x] - 1) %
-                                   SPRITE_COUNT_X) / (float) SPRITE_COUNT_X;
-                float v = (float) (((int) level_data[y][x] - 1) /
-                                   SPRITE_COUNT_X) / (float) SPRITE_COUNT_Y;
-            
-                float sprite_width = 1.0f / (float) SPRITE_COUNT_X;
-                float sprite_height = 1.0f / (float) SPRITE_COUNT_Y;
-            
-                vertex_data.insert(vertex_data.end(),
-                {
-                    TILE_SIZE * x, -TILE_SIZE * y,
-                    TILE_SIZE * x, (-TILE_SIZE * y) - TILE_SIZE,
-                    (TILE_SIZE * x) + TILE_SIZE, (-TILE_SIZE * y) - TILE_SIZE,
-                
-                    TILE_SIZE * x, -TILE_SIZE * y,
-                    (TILE_SIZE * x) + TILE_SIZE, (-TILE_SIZE * y) - TILE_SIZE,
-                    (TILE_SIZE * x) + TILE_SIZE, -TILE_SIZE * y
-                });
-            
-                tex_coord_data.insert(tex_coord_data.end(),
-                {
-                    u, v,
-                    u, v + sprite_height,
-                    u + sprite_width, v + sprite_height,
-                
-                    u, v,
-                    u + sprite_width, v + sprite_height,
-                    u + sprite_width, v
-                });
-                counter++;
-            }
-        }
-    }
-    
-    try
-    {
-        glUseProgram(program->programID);
-        model_matrix.identity();
-        
-        glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertex_data.data());
-        glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, tex_coord_data.data());
-        
-        glEnableVertexAttribArray(program->positionAttribute);
-        glEnableVertexAttribArray(program->texCoordAttribute);
-        
-        program->setModelMatrix(model_matrix);
-        glBindTexture(GL_TEXTURE_2D, block_texture);
-        //glDrawArrays(GL_TRIANGLES, 0, 6 * 32 * 128);
-        glDrawArrays(GL_TRIANGLES, 0, 6 * counter);
-        
-        glDisableVertexAttribArray(program->positionAttribute);
-        glDisableVertexAttribArray(program->texCoordAttribute);
-    }
-    catch (std::exception &e)
-    {
-        std::cout << "Exception in drawing: " << e.what() << "\n";
-    }
-    
 }
 
 void Platformer::check_for_collisions()
@@ -201,25 +126,64 @@ void Platformer::process_events(float elapsed)
             {
                 done = true;
             }
-            else if (event.type == SDL_KEYDOWN)
+            if (state == TITLE_SCREEN)
             {
-                if (event.key.keysym.scancode == SDL_SCANCODE_UP || event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+                if (event.type == SDL_KEYDOWN)
                 {
-                    // jump!
-                    player->jump();
+                    if (event.key.keysym.scancode == SDL_SCANCODE_RETURN ||
+                        event.key.keysym.scancode == SDL_SCANCODE_RETURN2 ||
+                        event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+                        state = LEVEL1;
+                    if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+                        done = true;
+                    if (cheatmode) // for debug purposes
+                    {
+                        if (event.key.keysym.scancode == SDL_SCANCODE_1)
+                            state = LEVEL1;
+                        if (event.key.keysym.scancode == SDL_SCANCODE_2)
+                            state = LEVEL2;
+                        if (event.key.keysym.scancode == SDL_SCANCODE_3)
+                            state = LEVEL3;
+                        if (event.key.keysym.scancode == SDL_SCANCODE_4)
+                            state = LEVEL4;
+                        if (event.key.keysym.scancode == SDL_SCANCODE_5)
+                            state = LEVEL5;
+                        if (event.key.keysym.scancode == SDL_SCANCODE_6)
+                            state = LEVEL6;
+                        if (event.key.keysym.scancode == SDL_SCANCODE_7)
+                            state = LEVEL7;
+                        if (event.key.keysym.scancode == SDL_SCANCODE_8)
+                            state = LEVEL8;
+                        if (event.key.keysym.scancode == SDL_SCANCODE_9)
+                            state = LEVEL9;
+                        if (event.key.keysym.scancode == SDL_SCANCODE_0)
+                            state = LEVEL10;
+                    }
                 }
             }
-            if (keys[SDL_SCANCODE_LEFT])
+            else if (state == LEVEL1 || state == LEVEL2 || state == LEVEL3 ||
+                     state == LEVEL4 || state == LEVEL5 || state == LEVEL6 ||
+                     state == LEVEL7 || state == LEVEL8 || state == LEVEL9 ||
+                     state == LEVEL10)
             {
-                // go left!
-                player->move(-20.0f);
+                if (keys[SDL_SCANCODE_LEFT])
+                    player->move(-5.0f);
+                if (keys[SDL_SCANCODE_RIGHT])
+                    player->move(5.0f);
+                if (keys[SDL_SCANCODE_UP])
+                    if (!player->has_jumped())
+                        player->jump();
             }
-            else if (keys[SDL_SCANCODE_RIGHT])
+            else if (state == GAME_OVER)
             {
-                // go right!
-                player->move(20.0f);
+                if (event.type == SDL_KEYDOWN)
+                {
+                    if (event.key.keysym.scancode == SDL_SCANCODE_RETURN ||
+                        event.key.keysym.scancode == SDL_SCANCODE_RETURN2 ||
+                        event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+                        state = TITLE_SCREEN;
+                }
             }
-            else player->move(0.0f);
         }
     }
     catch (std::exception &e)

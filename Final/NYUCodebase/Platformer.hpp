@@ -33,6 +33,8 @@ private:
     
     GameState state;
     
+    bool cheatmode;
+    
 public:
     Platformer();
     ~Platformer();

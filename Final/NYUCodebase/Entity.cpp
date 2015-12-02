@@ -44,6 +44,7 @@ float Entity::get_vel_y() { return velocity_y; }
 float Entity::get_acc_x() { return acceleration_x; }
 float Entity::get_acc_y() { return acceleration_y; }
 float Entity::get_gravity() { return gravity; }
+bool Entity::has_jumped() { return jumped; }
 
 void Entity::set_loc(float x, float y)
 {
@@ -66,7 +67,10 @@ bool Entity::is_colliding_with(Entity *e)
     if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
     {
         if (bottom <= etop)
+        {
             collided_bottom = true;
+            jumped = false;
+        }
         else if (top >= ebottom)
             collided_top = true;
     }
@@ -137,8 +141,8 @@ void Entity::bounce_off_of(Entity *e)
 
 void Entity::jump()
 {
-    if (collided_bottom)
-        velocity_y = 5.0f;
+    velocity_y = 5.0f;
+    jumped = true;
 }
 
 void Entity::move(float accel)

@@ -20,6 +20,7 @@ protected:
     float velocity_y;
     Utilities::SheetSprite sprite;
     bool static_entity;
+    bool jumped;
     
 private:
     float acceleration_x;
@@ -48,6 +49,7 @@ public:
     float get_acc_x();
     float get_acc_y();
     float get_gravity();
+    bool has_jumped();
     
     void set_loc(float x, float y);
     bool is_colliding_with(Entity *e);
