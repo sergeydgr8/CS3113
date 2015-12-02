@@ -173,6 +173,7 @@ void Platformer::process_events(float elapsed)
                 if (keys[SDL_SCANCODE_UP])
                     if (!player->has_jumped())
                         player->jump();
+                player->move(0.0f);
             }
             else if (state == GAME_OVER)
             {
