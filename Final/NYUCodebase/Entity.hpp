@@ -73,6 +73,7 @@ private:
 public:
     Block();
     Block(float x, float y, float ht, float wd, int bt, float vx = 0.0f, float vy = 0.0f);
+    int get_type();
 };
 
 class Coin : public Entity

@@ -24,10 +24,9 @@
 		A5171B8D1C03C9C5009693C4 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5171B8B1C03C9C5009693C4 /* Utils.cpp */; };
 		A5171B901C03D130009693C4 /* Platformer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5171B8E1C03D130009693C4 /* Platformer.cpp */; };
 		A5171B931C03D8D6009693C4 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5171B911C03D8D6009693C4 /* Entity.cpp */; };
-		A5171B951C0415DF009693C4 /* alienGreen_round.png in Resources */ = {isa = PBXBuildFile; fileRef = A5171B941C0415DF009693C4 /* alienGreen_round.png */; };
-		A5DB62A01C07F52700A25909 /* george_0.png in Resources */ = {isa = PBXBuildFile; fileRef = A5DB629C1C07F52700A25909 /* george_0.png */; };
-		A5DB62A11C07F52700A25909 /* JnRTiles.png in Resources */ = {isa = PBXBuildFile; fileRef = A5DB629D1C07F52700A25909 /* JnRTiles.png */; };
-		A5DB62A21C07F52700A25909 /* map.txt in Resources */ = {isa = PBXBuildFile; fileRef = A5DB629E1C07F52700A25909 /* map.txt */; };
+		A57E38B21C0E87CC000EB50F /* emojis.png in Resources */ = {isa = PBXBuildFile; fileRef = A57E38AF1C0E87CC000EB50F /* emojis.png */; };
+		A57E38B31C0E87CC000EB50F /* green_block.png in Resources */ = {isa = PBXBuildFile; fileRef = A57E38B01C0E87CC000EB50F /* green_block.png */; };
+		A57E38B41C0E87CC000EB50F /* red_block.png in Resources */ = {isa = PBXBuildFile; fileRef = A57E38B11C0E87CC000EB50F /* red_block.png */; };
 		A5DB62A31C07F52700A25909 /* partly_roboto.png in Resources */ = {isa = PBXBuildFile; fileRef = A5DB629F1C07F52700A25909 /* partly_roboto.png */; };
 /* End PBXBuildFile section */
 
@@ -61,10 +60,9 @@
 		A5171B8F1C03D130009693C4 /* Platformer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Platformer.hpp; sourceTree = "<group>"; };
 		A5171B911C03D8D6009693C4 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		A5171B921C03D8D6009693C4 /* Entity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Entity.hpp; sourceTree = "<group>"; };
-		A5171B941C0415DF009693C4 /* alienGreen_round.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alienGreen_round.png; sourceTree = "<group>"; };
-		A5DB629C1C07F52700A25909 /* george_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = george_0.png; sourceTree = "<group>"; };
-		A5DB629D1C07F52700A25909 /* JnRTiles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = JnRTiles.png; sourceTree = "<group>"; };
-		A5DB629E1C07F52700A25909 /* map.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = map.txt; sourceTree = "<group>"; };
+		A57E38AF1C0E87CC000EB50F /* emojis.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emojis.png; sourceTree = "<group>"; };
+		A57E38B01C0E87CC000EB50F /* green_block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_block.png; sourceTree = "<group>"; };
+		A57E38B11C0E87CC000EB50F /* red_block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_block.png; sourceTree = "<group>"; };
 		A5DB629F1C07F52700A25909 /* partly_roboto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = partly_roboto.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -135,11 +133,10 @@
 		6D5A86B419AE5C710066C1FD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A5DB629C1C07F52700A25909 /* george_0.png */,
-				A5DB629D1C07F52700A25909 /* JnRTiles.png */,
-				A5DB629E1C07F52700A25909 /* map.txt */,
+				A57E38AF1C0E87CC000EB50F /* emojis.png */,
+				A57E38B01C0E87CC000EB50F /* green_block.png */,
+				A57E38B11C0E87CC000EB50F /* red_block.png */,
 				A5DB629F1C07F52700A25909 /* partly_roboto.png */,
-				A5171B941C0415DF009693C4 /* alienGreen_round.png */,
 				6D5A86C519AE5C710066C1FD /* Images.xcassets */,
 				6D5A86B519AE5C710066C1FD /* NYUCodebase-Info.plist */,
 				6D5A86B619AE5C710066C1FD /* InfoPlist.strings */,
@@ -241,16 +238,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5DB62A31C07F52700A25909 /* partly_roboto.png in Resources */,
-				A5171B951C0415DF009693C4 /* alienGreen_round.png in Resources */,
+				A57E38B31C0E87CC000EB50F /* green_block.png in Resources */,
+				A57E38B21C0E87CC000EB50F /* emojis.png in Resources */,
 				6D5A86B819AE5C710066C1FD /* InfoPlist.strings in Resources */,
 				6DEF23C11B96CC2600BCE792 /* fragment.glsl in Resources */,
-				A5DB62A01C07F52700A25909 /* george_0.png in Resources */,
 				6DE9D2F11BA6AB8C002D599C /* fragment_textured.glsl in Resources */,
 				6D5A86C619AE5C710066C1FD /* Images.xcassets in Resources */,
-				A5DB62A21C07F52700A25909 /* map.txt in Resources */,
-				A5DB62A11C07F52700A25909 /* JnRTiles.png in Resources */,
 				6D5A86BE19AE5C710066C1FD /* Credits.rtf in Resources */,
 				6DEF23C41B96CC2600BCE792 /* vertex.glsl in Resources */,
+				A57E38B41C0E87CC000EB50F /* red_block.png in Resources */,
 				6DC7076A1BA7273500225B7D /* vertex_textured.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -189,6 +189,11 @@ Block::Block(float x, float y, float ht, float wd, int bt, float vx, float vy)
     velocity_y = vy;
 }
 
+int Block::get_type()
+{
+    return block_type;
+}
+
 //
 // Coin definitions
 //

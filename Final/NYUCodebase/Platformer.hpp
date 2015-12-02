@@ -8,8 +8,6 @@
 
 #include "Entity.hpp"
 
-#define TILE_SIZE 0.75f
-
 class Platformer
 {
 private:
@@ -23,32 +21,29 @@ private:
     Matrix view_matrix;
     Matrix model_matrix;
     
-    
     float last_frame_ticks;
     
-    // platformer specific
     Entity *player;
-    GLuint character_texture;
-    GLuint block_texture;
-    int map_width;
-    int map_height;
-    unsigned char **level_data;
+    GLuint emojis_texture;
+    GLuint green_block_texture;
+    GLuint red_block_texture;
+    GLuint font_texture;
     std::vector<Block*> blocks;
-    //float tile_size;
+    std::vector<Enemy*> enemies;
+    
+    GameState state;
     
 public:
     Platformer();
     ~Platformer();
-    
-    bool read_header(std::ifstream &stream);
-    bool read_layer_data(std::ifstream &stream);
     
     void build_map();
     void render_map();
     void check_for_collisions();
     void scroll_screen();
     
-    void setup();
+    void window_setup();
+    void texture_setup();
     void process_events(float elapsed);
     void update(float elapsed);
     void render();
