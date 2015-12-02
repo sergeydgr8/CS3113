@@ -33,20 +33,21 @@ private:
     
     GameState state;
     
-    bool cheatmode;
+    bool cheatmode = false;
     
 public:
     Platformer();
     ~Platformer();
     
+    void render_title_screen();
+    
     void build_map();
     void render_map();
     void check_for_collisions();
-    void scroll_screen();
     
     void window_setup();
     void texture_setup();
-    void process_events(float elapsed);
+    void process_events();
     void update(float elapsed);
     void render();
     bool run_game();

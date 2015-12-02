@@ -7,7 +7,8 @@
 
 Platformer::Platformer()
 {
-    cheatmode = true; // modify this to jump to a certain level from title screen
+    cheatmode = true; // uncomment this to jump to a certain level from title screen
+    state = TITLE_SCREEN;
     window_setup();
     texture_setup();
 }
@@ -24,13 +25,74 @@ Platformer::~Platformer()
     SDL_Quit();
 }
 
+void Platformer::render_title_screen()
+{
+    model_matrix.identity();
+    model_matrix.Translate(-5.0f, 3.7f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_texture, "EMOJI PLATFORMER", 1.0f, -0.3f);
+    
+    model_matrix.identity();
+    model_matrix.Translate(-4.1f, 2.9f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_texture, "NYU-Poly CS-UY 3113 Project by Sergey Smirnov", 0.3f, -0.1f);
+    
+    model_matrix.identity();
+    model_matrix.Translate(-1.7f, 2.2f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_texture, "INSTRUCTIONS:", 0.5f, -0.2f);
+    
+    Utilities::SheetSprite emojis(emojis_texture, 8.0f, 1.0f, 1.0f, 1.0f, 0.75f);
+    
+    emojis.Draw(program, model_matrix, 0, -5.5f, 1.2f);
+    model_matrix.identity();
+    model_matrix.Translate(-4.75f, 1.2f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_texture, "This is YOU. Use your left and right arrow keys to move, up arrow key to jump.", 0.3f, -0.16f);
+    
+    emojis.Draw(program, model_matrix, 4, -5.5f, 0.2f);
+    model_matrix.identity();
+    model_matrix.Translate(-4.75f, 0.35f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_texture, "This is one of your enemies. You can beat them if you're larger, otherwise you", 0.3f, -0.16f);
+    model_matrix.identity();
+    model_matrix.Translate(-4.75f, 0.1f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_texture, "die upon contact.", 0.3f, -0.16f);
+    
+    emojis.Draw(program, model_matrix, 6, -5.5f, -0.8f);
+    model_matrix.identity();
+    model_matrix.Translate(-4.75f, -0.8f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_texture, "This is another enemy. These follow you and you cannot beat them.", 0.3f, -0.16f);
+    
+    
+}
+
 // TODO: Build all the levels
 void Platformer::build_map()
 {
+    // clear out all the blocks and enemies to create new level
+    for (size_t i = 0; i < blocks.size(); i++)
+        delete blocks[i];
+    blocks.clear();
+    for (size_t i = 0; i < enemies.size(); i++)
+        delete enemies[i];
+    enemies.clear();
+    
     switch (state)
     {
         case LEVEL1:
-            // render level 1
+            blocks.push_back(new Block(-5.5f, -3.0f, 0.2f, 0.8f, 0));
+            blocks.push_back(new Block(-4.5f, -2.7f, 0.2f, 1.5f, 0));
+            for (Block *b : blocks)
+            {
+                if (b->get_type() == 0)
+                    b->set_sprite(green_block_texture, 1, 1);
+                else if (b->get_type() == 1)
+                    b->set_sprite(red_block_texture, 1, 1);
+                b->render(program, model_matrix, 0);
+            }
             break;
         case LEVEL2:
             // render level 2
@@ -110,12 +172,12 @@ void Platformer::window_setup()
 void Platformer::texture_setup()
 {
     emojis_texture = utilities.LoadRGBATexture(RESOURCE_FOLDER"emojis.png");
-    green_block_texture = utilities.LoadRGBTexture(RESOURCE_FOLDER"green_block.png");
-    red_block_texture = utilities.LoadRGBTexture(RESOURCE_FOLDER"red_block.png");
-    font_texture = utilities.LoadRGBATexture(RESOURCE_FOLDER"partly_roboto.png");
+    green_block_texture = utilities.LoadRGBATexture(RESOURCE_FOLDER"green_block.png");
+    red_block_texture = utilities.LoadRGBATexture(RESOURCE_FOLDER"red_block.png");
+    font_texture = utilities.LoadRGBATexture(RESOURCE_FOLDER"font1.png");
 }
 
-void Platformer::process_events(float elapsed)
+void Platformer::process_events()
 {
     try
     {
@@ -166,6 +228,8 @@ void Platformer::process_events(float elapsed)
                      state == LEVEL7 || state == LEVEL8 || state == LEVEL9 ||
                      state == LEVEL10)
             {
+                if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+                    state = TITLE_SCREEN;
                 if (keys[SDL_SCANCODE_LEFT])
                     player->move(-5.0f);
                 if (keys[SDL_SCANCODE_RIGHT])
@@ -196,10 +260,9 @@ void Platformer::process_events(float elapsed)
 
 void Platformer::update(float elapsed)
 {
-    process_events(elapsed);
-    player->update(elapsed);
-    check_for_collisions();
-    scroll_screen();
+    process_events();
+    //player->update(elapsed);
+    //check_for_collisions();
 }
 
 void Platformer::render()
@@ -213,8 +276,20 @@ void Platformer::render()
         program->setProjectionMatrix(projection_matrix);
         program->setViewMatrix(view_matrix);
         
-        render_map();
-        player->render(program, model_matrix, 0);
+        if (state == TITLE_SCREEN)
+        {
+            render_title_screen();
+        }
+        else if (state == GAME_OVER)
+        {
+            // render game over screen
+        }
+        else
+        {
+            build_map();
+        }
+        //render_map();
+        //player->render(program, model_matrix, 0);
         
         SDL_GL_SwapWindow(display_window);
     }
