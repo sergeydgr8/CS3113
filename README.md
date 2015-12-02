@@ -20,7 +20,7 @@ About half of it was written on a Windows PC with Visual Studio, the other half 
 *  HW3 - Space Invaders
 *  HW4 - Platformer game
 *  HW5 - Adding sound to a previous assignment
-*  Final - Smiley platformer (flash game spin-off) [WIP]
+*  Final - Emoji platformer [WIP]
 
 ### Final project specs.
 
