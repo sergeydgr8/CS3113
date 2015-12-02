@@ -8,13 +8,6 @@
 
 #include "Utils.hpp"
 
-enum EntityType
-{
-    PLAYER,
-    ENEMY,
-    COIN,
-    BLOCK
-};
 
 class Entity
 {
@@ -25,7 +18,6 @@ protected:
     float pos_y;
     float velocity_x;
     float velocity_y;
-    EntityType type;
     Utilities::SheetSprite sprite;
     bool static_entity;
     
@@ -42,7 +34,7 @@ private:
 public:
     Entity();
     Entity(float ht, float wd, float x, float y, float vx,
-           float vy, float ax, float ay, float gr, EntityType tp);
+           float vy, float ax, float ay, float gr);
     
     void set_sprite(GLuint texture_id, float u, float v,
                     float w, float h, float sz);
@@ -56,7 +48,6 @@ public:
     float get_acc_x();
     float get_acc_y();
     float get_gravity();
-    EntityType get_type();
     bool is_static();
     
     void set_loc(float x, float y);
@@ -72,7 +63,14 @@ class Block : public Entity
 {
 public:
     Block();
-    Block(float x, float y, float tile_size);
+    Block(float x, float y, float ht, float wd, float vx = 0.0f, float vy = 0.0f);
+};
+
+class Coin : public Entity
+{
+public:
+    Coin();
+    Coin(float x, float y, float diam);
 };
 
 #endif /* Entity_hpp */

@@ -20,35 +20,14 @@ Entity::Entity()
     acceleration_x = 0.0f;
     acceleration_y = 0.0f;
     gravity = 9.81f;
-    type = BLOCK;
     static_entity = true;
 }
 
 Entity::Entity(float ht, float wd, float x, float y, float vx,
-               float vy, float ax, float ay, float gr, EntityType tp) :
+               float vy, float ax, float ay, float gr) :
                height(ht), width(wd), pos_x(x), pos_y(y), velocity_x(vx),
                velocity_y(vy), acceleration_x(ax), acceleration_y(ay),
-               gravity(gr), type(tp)
-{
-    switch (type)
-    {
-        case PLAYER:
-            static_entity = false;
-            break;
-        case ENEMY:
-            static_entity = false;
-            break;
-        case COIN:
-            static_entity = true;
-            break;
-        case BLOCK:
-            static_entity = true;
-        default:
-            static_entity = true;
-            break;
-    }
-    friction = 5.0f;
-}
+               gravity(gr) { friction = 5.0f; }
 
 void Entity::set_sprite(GLuint texture_id, float u, float v,
                         float w, float h, float sz)
@@ -65,7 +44,6 @@ float Entity::get_vel_y() { return velocity_y; }
 float Entity::get_acc_x() { return acceleration_x; }
 float Entity::get_acc_y() { return acceleration_y; }
 float Entity::get_gravity() { return gravity; }
-EntityType Entity::get_type() { return type; }
 bool Entity::is_static() { return static_entity; }
 
 void Entity::set_loc(float x, float y)
@@ -135,9 +113,9 @@ bool Entity::is_colliding_with(Entity *e)
         }
     }
     
-    if ((collided_top || collided_bottom) && e->get_type() == BLOCK)
+    if ((collided_top || collided_bottom))
         velocity_y = 0.0f;
-    if ((collided_left || collided_right) && e->get_type() == BLOCK)
+    if ((collided_left || collided_right))
         velocity_x = 0.0f;
     
     return (collided_top || collided_bottom ||
@@ -146,7 +124,8 @@ bool Entity::is_colliding_with(Entity *e)
 
 void Entity::jump()
 {
-    velocity_y = 5.0f;
+    if (collided_bottom)
+        velocity_y = 5.0f;
 }
 
 void Entity::move(float accel)
@@ -180,13 +159,24 @@ void Entity::render(ShaderProgram *program, Matrix &model_matrix, int index)
 // Block definitions
 //
 
-Block::Block(float x, float y, float tile_size)
+Block::Block(float x, float y, float ht, float wd, float vx, float vy)
 {
     pos_x = x;
     pos_y = y;
-    type = BLOCK;
-    velocity_x = 0.0f;
-    velocity_y = 0.0f;
-    height = tile_size;
-    width = tile_size;
+    height = ht;
+    width = wd;
+    velocity_x = vx;
+    velocity_y = vy;
+}
+
+//
+// Coin definitions
+//
+
+Coin::Coin(float x, float y, float diam)
+{
+    pos_x = x;
+    pos_y = y;
+    height = diam;
+    width = diam;
 }
