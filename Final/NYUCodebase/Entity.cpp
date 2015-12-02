@@ -44,7 +44,6 @@ float Entity::get_vel_y() { return velocity_y; }
 float Entity::get_acc_x() { return acceleration_x; }
 float Entity::get_acc_y() { return acceleration_y; }
 float Entity::get_gravity() { return gravity; }
-bool Entity::is_static() { return static_entity; }
 
 void Entity::set_loc(float x, float y)
 {
