@@ -20,14 +20,13 @@ Entity::Entity()
     acceleration_x = 0.0f;
     acceleration_y = 0.0f;
     gravity = 9.81f;
-    static_entity = true;
 }
 
 Entity::Entity(float x, float y, float ht, float wd, float vx,
                float vy, float ax, float ay, float gr) :
                height(ht), width(wd), pos_x(x), pos_y(y), velocity_x(vx),
                velocity_y(vy), acceleration_x(ax), acceleration_y(ay),
-               gravity(gr) { friction = 5.0f; }
+               gravity(gr) { friction = 3.0f; jump_amount = height * 20.0f;}
 
 void Entity::set_sprite(GLuint texture_id, float scount_x, float scount_y)
 {
@@ -53,32 +52,63 @@ void Entity::set_loc(float x, float y)
 
 bool Entity::is_colliding_with(Entity *e)
 {
-    float top = pos_y + (height / 2);
-    float bottom = pos_y - (height / 2);
-    float left = pos_x - (width / 2);
-    float right = pos_y + (width / 2);
+    float top = pos_y + (height / 2.0f);
+    float bottom = pos_y - (height / 2.0f);
+    float left = pos_x - (width / 2.0f);
+    float right = pos_y + (width / 2.0f);
     
-    float etop = e->get_pos_y() + (e->get_height() / 2);
-    float ebottom = e->get_pos_y() - (e->get_height() / 2);
-    float eleft = e->get_pos_x() - (e->get_width() / 2);
-    float eright = e->get_pos_x() + (e->get_width() / 2);
+    float etop = e->get_pos_y() + (e->get_height() / 2.0f);
+    float ebottom = e->get_pos_y() - (e->get_height() / 2.0f);
+    float eleft = e->get_pos_x() - (e->get_width() / 2.0f);
+    float eright = e->get_pos_x() + (e->get_width() / 2.0f);
     
-    if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
+    /*if (bottom < etop && fabs(left - eleft) < e->get_width() &&
+        fabs(right - eright) < e->get_width())
     {
-        if (bottom <= etop)
+        collided_bottom = true;
+        jumped = false;
+    }
+    
+    else if (top > ebottom && fabs(left - eleft) < e->get_width() &&
+             fabs(right - eright) < e->get_width())
+    {
+        collided_top = true;
+    }
+    
+    if (left < eright && fabs(top - etop) < e->get_height() &&
+        fabs(bottom - ebottom) < e->get_height())
+    {
+        collided_left = true;
+    }
+    
+    else if (right > eleft && fabs(top - etop) < e->get_height() &&
+             fabs(bottom - ebottom) < e->get_height())
+    {
+        collided_right = true;
+    }*/
+    
+    
+    if (bottom <= etop && bottom > ebottom)
+    {
+        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
         {
             collided_bottom = true;
             jumped = false;
         }
-        else if (top >= ebottom)
+    }
+    else if (top >= ebottom && top < etop)
+    {
+        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
             collided_top = true;
     }
-    
-    if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
+    else if (left <= eright && left > eleft)
     {
-        if (left <= eright)
+        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
             collided_left = true;
-        else if (right >= eleft)
+    }
+    else if (right >= eleft && right < eright)
+    {
+        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
             collided_right = true;
     }
     
@@ -88,65 +118,117 @@ bool Entity::is_colliding_with(Entity *e)
 
 void Entity::bounce_off_of(Entity *e)
 {
-    float top = pos_y + (height / 2);
-    float bottom = pos_y - (height / 2);
-    float left = pos_x - (width / 2);
-    float right = pos_y + (width / 2);
+    float top = pos_y + (height / 2.0f);
+    float bottom = pos_y - (height / 2.0f);
+    float left = pos_x - (width / 2.0f);
+    float right = pos_y + (width / 2.0f);
     
-    float etop = e->get_pos_y() + (e->get_height() / 2);
-    float ebottom = e->get_pos_y() - (e->get_height() / 2);
-    float eleft = e->get_pos_x() - (e->get_width() / 2);
-    float eright = e->get_pos_x() + (e->get_width() / 2);
+    float etop = e->get_pos_y() + (e->get_height() / 2.0f);
+    float ebottom = e->get_pos_y() - (e->get_height() / 2.0f);
+    float eleft = e->get_pos_x() - (e->get_width() / 2.0f);
+    float eright = e->get_pos_x() + (e->get_width() / 2.0f);
     
     float penetration = 0.0f;
     
-    if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
+    if (collided_bottom)
     {
-        if (bottom <= etop)
+        penetration = fabs(bottom - etop);
+        pos_y += (penetration + 0.0001f);
+    }
+    else if (collided_top)
+    {
+        penetration = fabs(top - ebottom);
+        pos_y -= (penetration + 0.0001f);
+    }
+    else if (collided_left)
+    {
+        penetration = fabs(left - eright);
+        pos_x += (penetration + 0.0001f);
+    }
+    else if (collided_right)
+    {
+        penetration = fabs(right - eleft);
+        pos_x -= (penetration + 0.0001f);
+    }
+    
+    /*if (bottom <= etop && bottom > ebottom)
+    {
+        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
         {
-            penetration = fabs(pos_y + e->get_pos_y() -
-                               (height / 2) - (e->get_height() / 2));
+            penetration = fabs(pos_y - e->get_pos_y() -
+                               (height / 2.0f) - (e->get_height() / 2.0f));
             pos_y += (penetration + 0.0001f);
         }
-        else if (top >= ebottom)
+    }
+    else if (top >= ebottom && top < etop)
+    {
+        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
         {
-            penetration = fabs(e->get_pos_y() + pos_y -
-                               (height / 2) - (e->get_height() / 2));
+            penetration = fabs(e->get_pos_y() - pos_y -
+                               (height / 2.0f) - (e->get_height() / 2.0f));
             pos_y -= (penetration + 0.0001f);
         }
     }
-    
-    if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
+    if (left <= eright && left > eleft)
     {
-        if (left <= eright)
+        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
         {
             penetration = fabs(pos_x - e->get_pos_x() -
-                               (width / 2) - (e->get_width() / 2));
+                               (width / 2.0f) - (e->get_width() / 2.0f));
             pos_x += (penetration + 0.0001f);
         }
-        else if (right >= eleft)
+    }
+    else if (right >= eleft && right < eright)
+    {
+        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
         {
             penetration = fabs(e->get_pos_x() - pos_x -
-                               (width / 2) - (e->get_width() / 2));
+                               (width / 2.0f) - (e->get_width() / 2.0f));
             pos_x -= (penetration + 0.0001f);
         }
-    }
+    }*/
     
     if ((collided_top || collided_bottom))
+    {
         velocity_y = 0.0f;
+        acceleration_y = 0.0f;
+    }
     if ((collided_left || collided_right))
         velocity_x = 0.0f;
 }
 
 void Entity::jump()
 {
-    velocity_y = 5.0f;
+    velocity_y = jump_amount;
     jumped = true;
 }
 
 void Entity::move(float accel)
 {
     acceleration_x = accel;
+}
+
+void Entity::update_size(float amount)
+{
+    float ratio = width / height;
+    width += amount;
+    height += (amount / ratio);
+}
+
+void Entity::reset()
+{
+    acceleration_x = 0.0f;
+    acceleration_y = 0.0f;
+    velocity_x = 0.0f;
+    velocity_y = 0.0f;
+    collided_top = false;
+    collided_bottom = false;
+    collided_left = false;
+    collided_right = false;
+    height = 0.25f;
+    width = 0.25f;
+    jumped = false;
+    jump_amount = height * 20.0f;
 }
 
 void Entity::update(float elapsed)
@@ -156,8 +238,8 @@ void Entity::update(float elapsed)
     collided_left = false;
     collided_right = false;
     
-    this->set_loc(pos_x + (velocity_x * elapsed),
-                  pos_y + (velocity_y * elapsed));
+    pos_x += velocity_x * elapsed;
+    pos_y += velocity_y * elapsed;
     
     velocity_x += acceleration_x * elapsed;
     velocity_y += (acceleration_y - gravity) * elapsed;

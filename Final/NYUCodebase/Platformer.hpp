@@ -22,6 +22,7 @@ private:
     Matrix model_matrix;
     
     float last_frame_ticks;
+    float time_left_over = 0.0f;
     
     Entity *player;
     GLuint emojis_texture;
@@ -34,6 +35,7 @@ private:
     GameState state;
     
     bool cheatmode = false;
+    bool finished_level = true;
     
 public:
     Platformer();

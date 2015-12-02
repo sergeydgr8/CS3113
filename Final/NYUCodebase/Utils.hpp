@@ -29,6 +29,9 @@
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 #endif
 
+#define FIXED_TIMESTEP 0.0166666f
+#define MAX_TIMESTEPS 6
+
 enum GameState
 {
     TITLE_SCREEN,

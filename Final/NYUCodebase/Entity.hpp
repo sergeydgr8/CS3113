@@ -19,18 +19,18 @@ protected:
     float velocity_x;
     float velocity_y;
     Utilities::SheetSprite sprite;
-    bool static_entity;
-    bool jumped;
     
 private:
     float acceleration_x;
     float acceleration_y;
     float gravity;
     float friction;
+    float jump_amount;
     bool collided_top;
     bool collided_bottom;
     bool collided_left;
     bool collided_right;
+    bool jumped;
     
 public:
     Entity();
@@ -55,6 +55,8 @@ public:
     void bounce_off_of(Entity *e);
     void jump();
     void move(float accel);
+    void update_size(float amount);
+    void reset();
     
     void update(float elapsed);
     void render(ShaderProgram *program, Matrix &model_matrix, int index);
