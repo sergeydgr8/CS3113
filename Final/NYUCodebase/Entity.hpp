@@ -51,6 +51,7 @@ public:
     
     void set_loc(float x, float y);
     bool is_colliding_with(Entity *e);
+    void bounce_off_of(Entity *e);
     void jump();
     void move(float accel);
     

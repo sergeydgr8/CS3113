@@ -63,49 +63,66 @@ bool Entity::is_colliding_with(Entity *e)
     float eleft = e->get_pos_x() - (e->get_width() / 2);
     float eright = e->get_pos_x() + (e->get_width() / 2);
     
+    if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
+    {
+        if (bottom <= etop)
+            collided_bottom = true;
+        else if (top >= ebottom)
+            collided_top = true;
+    }
+    
+    if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
+    {
+        if (left <= eright)
+            collided_left = true;
+        else if (right >= eleft)
+            collided_right = true;
+    }
+    
+    return (collided_top || collided_bottom ||
+            collided_left || collided_right);
+}
+
+void Entity::bounce_off_of(Entity *e)
+{
+    float top = pos_y + (height / 2);
+    float bottom = pos_y - (height / 2);
+    float left = pos_x - (width / 2);
+    float right = pos_y + (width / 2);
+    
+    float etop = e->get_pos_y() + (e->get_height() / 2);
+    float ebottom = e->get_pos_y() - (e->get_height() / 2);
+    float eleft = e->get_pos_x() - (e->get_width() / 2);
+    float eright = e->get_pos_x() + (e->get_width() / 2);
+    
     float penetration = 0.0f;
     
-    if (bottom <= etop)
+    if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
     {
-        if (fabs(left - eleft) < e->width &&
-            fabs(right - eright) < e->width)
+        if (bottom <= etop)
         {
-            collided_bottom = true;
             penetration = fabs(pos_y + e->get_pos_y() -
                                (height / 2) - (e->get_height() / 2));
             pos_y += (penetration + 0.0001f);
         }
-    }
-    else if (top >= ebottom)
-    {
-        if (fabs(left - eleft) < e->width &&
-            fabs(right - eright) < e->width &&
-            bottom < etop)
+        else if (top >= ebottom)
         {
-            collided_top = true;
             penetration = fabs(e->get_pos_y() + pos_y -
                                (height / 2) - (e->get_height() / 2));
             pos_y -= (penetration + 0.0001f);
         }
     }
-    if (left <= eright)
+    
+    if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
     {
-        if (fabs(top - etop) < e->height &&
-            fabs(bottom - ebottom) < e->height)
+        if (left <= eright)
         {
-            collided_left = true;
             penetration = fabs(pos_x - e->get_pos_x() -
                                (width / 2) - (e->get_width() / 2));
             pos_x += (penetration + 0.0001f);
         }
-    }
-    else if (right >= eleft)
-    {
-        if (fabs(top - etop) < e->height &&
-            fabs(bottom - ebottom) < e->height &&
-            left < eright)
+        else if (right >= eleft)
         {
-            collided_right = true;
             penetration = fabs(e->get_pos_x() - pos_x -
                                (width / 2) - (e->get_width() / 2));
             pos_x -= (penetration + 0.0001f);
@@ -116,9 +133,6 @@ bool Entity::is_colliding_with(Entity *e)
         velocity_y = 0.0f;
     if ((collided_left || collided_right))
         velocity_x = 0.0f;
-    
-    return (collided_top || collided_bottom ||
-            collided_left || collided_right);
 }
 
 void Entity::jump()
