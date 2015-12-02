@@ -29,10 +29,10 @@ Entity::Entity(float ht, float wd, float x, float y, float vx,
                velocity_y(vy), acceleration_x(ax), acceleration_y(ay),
                gravity(gr) { friction = 5.0f; }
 
-void Entity::set_sprite(GLuint texture_id, float u, float v,
+void Entity::set_sprite(GLuint texture_id, float scount_x, float scount_y,
                         float w, float h, float sz)
 {
-    sprite = Utilities::SheetSprite(texture_id, u, v, w, h, sz);
+    sprite = Utilities::SheetSprite(texture_id, scount_x, scount_y, w, h, sz);
 }
 
 float Entity::get_height() { return height; }

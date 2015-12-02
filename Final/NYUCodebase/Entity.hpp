@@ -36,7 +36,7 @@ public:
     Entity(float ht, float wd, float x, float y, float vx,
            float vy, float ax, float ay, float gr);
     
-    void set_sprite(GLuint texture_id, float u, float v,
+    void set_sprite(GLuint texture_id, float scount_x, float scount_y,
                     float w, float h, float sz);
     
     float get_height();
