@@ -55,7 +55,7 @@ bool Entity::is_colliding_with(Entity *e)
     float top = pos_y + (height);
     float bottom = pos_y - (height);
     float left = pos_x - (width);
-    float right = pos_y + (width);
+    float right = pos_x + (width);
     
     float etop = e->get_pos_y() + (e->get_height());
     float ebottom = e->get_pos_y() - (e->get_height());
@@ -121,7 +121,7 @@ void Entity::bounce_off_of(Entity *e)
     float top = pos_y + (height);
     float bottom = pos_y - (height);
     float left = pos_x - (width);
-    float right = pos_y + (width);
+    float right = pos_x + (width);
     
     float etop = e->get_pos_y() + (e->get_height());
     float ebottom = e->get_pos_y() - (e->get_height());
