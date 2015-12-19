@@ -83,6 +83,12 @@ void Platformer::render_title_screen()
     program->setModelMatrix(model_matrix);
     utilities.DrawText(program, font_texture, "Avoid these, they shrink you:", 0.3f, -0.16f);
     
+    emojis.Draw(program, model_matrix, 7, -5.5f, -2.6f);
+    model_matrix.identity();
+    model_matrix.Translate(-4.75f, -2.6f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_texture, "Need to quit? Hit ESC.", 0.3f, -0.16f);
+    
     model_matrix.identity();
     model_matrix.Translate(-5.1f, -4.0f, 0.0f);
     program->setModelMatrix(model_matrix);
@@ -103,17 +109,17 @@ void Platformer::build_map()
     switch (state)
     {
         case LEVEL1:
-            blocks.push_back(new Block(-5.5f, -4.0f, 0.15f, 0.5f, 0));
-            blocks.push_back(new Block(-3.0f, -3.7f, 0.15f, 0.5f, 0));
-            blocks.push_back(new Block(-1.8f, -2.0f, 0.15f, 0.5f, 0));
-            blocks.push_back(new Block(-2.7f, -0.2f, 0.15f, 0.5f, 0));
-            blocks.push_back(new Block(0.2f, 0.7f, 0.15f, 0.5f, 0));
-            blocks.push_back(new Block(3.5f, 1.0f, 0.15f, 0.5f, 0));
+            blocks.push_back(new Block(-5.5f, -4.0f, 0.15f, 0.5f, GREEN));
+            blocks.push_back(new Block(-3.0f, -3.7f, 0.15f, 0.5f, GREEN));
+            blocks.push_back(new Block(-1.8f, -2.0f, 0.15f, 0.5f, GREEN));
+            blocks.push_back(new Block(-2.7f, -0.2f, 0.15f, 0.5f, GREEN));
+            blocks.push_back(new Block(0.2f, 0.7f, 0.15f, 0.5f, GREEN));
+            blocks.push_back(new Block(3.5f, 1.0f, 0.7f, 0.5f, GREEN));
             for (Block *b : blocks)
             {
-                if (b->get_type() == 0)
+                if (b->get_type() == GREEN)
                     b->set_sprite(green_block_texture, 1, 1);
-                else if (b->get_type() == 1)
+                else if (b->get_type() == RED)
                     b->set_sprite(red_block_texture, 1, 1);
                 b->render(program, model_matrix, 0);
             }
@@ -162,9 +168,9 @@ void Platformer::check_for_collisions()
     {
         if (player->is_colliding_with(b))
         {
-            if (b->get_type() == 0)
+            if (b->get_type() == GREEN)
                 player->bounce_off_of(b);
-            else if (b->get_type() == 1)
+            else if (b->get_type() == RED)
                 player->update_size(-0.05f);
         }
     }

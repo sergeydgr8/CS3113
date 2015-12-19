@@ -101,7 +101,7 @@ bool Entity::is_colliding_with(Entity *e)
         if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
             collided_top = true;
     }
-    else if (left <= eright && left > eleft)
+    if (left <= eright && left > eleft)
     {
         if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
             collided_left = true;
@@ -133,22 +133,22 @@ void Entity::bounce_off_of(Entity *e)
     if (collided_bottom)
     {
         penetration = fabs(bottom - etop);
-        pos_y += (penetration + 0.001f);
+        pos_y += (penetration + 0.0001f);
     }
     else if (collided_top)
     {
         penetration = fabs(top - ebottom);
-        pos_y -= (penetration + 0.001f);
+        pos_y -= (penetration + 0.0001f);
     }
-    else if (collided_left)
+    if (collided_left)
     {
         penetration = fabs(left - eright);
-        pos_x += (penetration + 0.001f);
+        pos_x += (penetration + 0.0001f);
     }
     else if (collided_right)
     {
         penetration = fabs(right - eleft);
-        pos_x -= (penetration + 0.001f);
+        pos_x -= (penetration + 0.0001f);
     }
     
     /*if (bottom <= etop && bottom > ebottom)
@@ -242,9 +242,10 @@ void Entity::update(float elapsed)
     collided_right = false;
     
     pos_x += velocity_x * elapsed;
-    pos_y += velocity_y * elapsed;
-    
     velocity_x += acceleration_x * elapsed;
+    
+    
+    pos_y += velocity_y * elapsed;
     velocity_y += (acceleration_y - gravity) * elapsed;
     
     if (velocity_x > 0.0f) velocity_x -= friction * elapsed;
@@ -280,20 +281,20 @@ void Enemy::move(float vx, float vy)
 // Block definitions
 //
 
-Block::Block(float x, float y, float ht, float wd, int bt, float vx, float vy)
+Block::Block(float x, float y, float ht, float wd, BLOCK_TYPE bt, float vx, float vy)
 {
     pos_x = x;
     pos_y = y;
     height = ht;
     width = wd;
-    block_type = bt;
+    type = bt;
     velocity_x = vx;
     velocity_y = vy;
 }
 
-int Block::get_type()
+BLOCK_TYPE Block::get_type()
 {
-    return block_type;
+    return type;
 }
 
 //

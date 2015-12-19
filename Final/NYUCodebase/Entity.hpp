@@ -8,6 +8,11 @@
 
 #include "Utils.hpp"
 
+enum BLOCK_TYPE
+{
+    GREEN,
+    RED
+};
 
 class Entity
 {
@@ -73,11 +78,13 @@ public:
 class Block : public Entity
 {
 private:
-    int block_type;
+    //int block_type;
+    BLOCK_TYPE type;
 public:
     Block();
-    Block(float x, float y, float ht, float wd, int bt, float vx = 0.0f, float vy = 0.0f);
-    int get_type();
+    Block(float x, float y, float ht, float wd, BLOCK_TYPE bt, float vx = 0.0f, float vy = 0.0f);
+    //int get_type();
+    BLOCK_TYPE get_type();
 };
 
 class Coin : public Entity
