@@ -311,8 +311,31 @@ void Platformer::update(float elapsed)
     if (state == TITLE_SCREEN || state == GAME_OVER)
         return;
     
-    player->update(elapsed);
-    check_for_collisions();
+    //player->update(elapsed);
+    //check_for_collisions();
+    
+    player->move_y(elapsed);
+    for (Block *b : blocks)
+    {
+        if (player->is_colliding_on_y_with(b))
+        {
+            if (b->get_type() == GREEN)
+                player->bounce_off_of(b);
+            else if (b->get_type() == RED)
+                player->update_size(-0.05f);
+        }
+    }
+    player->move_x(elapsed);
+    for (Block *b : blocks)
+    {
+        if (player->is_colliding_on_x_with(b))
+        {
+            if (b->get_type() == GREEN)
+                player->bounce_off_of(b);
+            else if (b->get_type() == RED)
+                player->update_size(-0.05f);
+        }
+    }
 }
 
 void Platformer::render()

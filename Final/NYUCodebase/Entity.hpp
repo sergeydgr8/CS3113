@@ -63,6 +63,11 @@ public:
     void update_size(float amount);
     void reset();
     
+    void move_y(float elapsed);
+    bool is_colliding_on_y_with(Entity *e);
+    void move_x(float elapsed);
+    bool is_colliding_on_x_with(Entity *e);
+    
     void update(float elapsed);
     void render(ShaderProgram *program, Matrix &model_matrix, int index);
 };

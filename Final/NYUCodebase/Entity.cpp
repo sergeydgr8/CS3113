@@ -234,6 +234,76 @@ void Entity::reset()
     jump_amount = height * 20.0f;
 }
 
+void Entity::move_y(float elapsed)
+{
+    pos_y += velocity_y * elapsed;
+    velocity_y += (acceleration_y - gravity) * elapsed;
+}
+
+bool Entity::is_colliding_on_y_with(Entity *e)
+{
+    float top = pos_y + (height);
+    float bottom = pos_y - (height);
+    float left = pos_x - (width);
+    float right = pos_x + (width);
+    
+    float etop = e->get_pos_y() + (e->get_height());
+    float ebottom = e->get_pos_y() - (e->get_height());
+    float eleft = e->get_pos_x() - (e->get_width());
+    float eright = e->get_pos_x() + (e->get_width());
+    
+    if (bottom <= etop && bottom > ebottom)
+    {
+        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
+        {
+            collided_bottom = true;
+            jumped = false;
+        }
+    }
+    else if (top >= ebottom && top < etop)
+    {
+        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
+            collided_top = true;
+    }
+    
+    return (collided_bottom || collided_top);
+}
+
+void Entity::move_x(float elapsed)
+{
+    pos_x += velocity_x * elapsed;
+    velocity_x += acceleration_x * elapsed;
+    
+    if (velocity_x > 0.0f) velocity_x -= friction * elapsed;
+    else if (velocity_x < 0.0f) velocity_x += friction * elapsed;
+}
+
+bool Entity::is_colliding_on_x_with(Entity *e)
+{
+    float top = pos_y + (height);
+    float bottom = pos_y - (height);
+    float left = pos_x - (width);
+    float right = pos_x + (width);
+    
+    float etop = e->get_pos_y() + (e->get_height());
+    float ebottom = e->get_pos_y() - (e->get_height());
+    float eleft = e->get_pos_x() - (e->get_width());
+    float eright = e->get_pos_x() + (e->get_width());
+    
+    if (left <= eright && left > eleft)
+    {
+        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
+            collided_left = true;
+    }
+    else if (right >= eleft && right < eright)
+    {
+        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
+            collided_right = true;
+    }
+    
+    return (collided_left || collided_right);
+}
+
 void Entity::update(float elapsed)
 {
     collided_top = false;
