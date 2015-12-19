@@ -19,7 +19,7 @@ Entity::Entity()
     velocity_y = 0.0f;
     acceleration_x = 0.0f;
     acceleration_y = 0.0f;
-    gravity = 9.81f;
+    gravity = 15.0f;
 }
 
 Entity::Entity(float x, float y, float ht, float wd, float vx,
@@ -118,6 +118,17 @@ bool Entity::is_colliding_with(Entity *e)
 
 void Entity::bounce_off_of(Entity *e)
 {
+    if ((collided_top || collided_bottom))
+    {
+        velocity_y = 0.0f;
+        acceleration_y = 0.0f;
+    }
+    if ((collided_left || collided_right))
+    {
+        velocity_x = 0.0f;
+        acceleration_x = 0.0f;
+    }
+    
     float top = pos_y + (height);
     float bottom = pos_y - (height);
     float left = pos_x - (width);
@@ -132,22 +143,26 @@ void Entity::bounce_off_of(Entity *e)
     
     if (collided_bottom)
     {
-        penetration = fabs(bottom - etop);
+        //penetration = fabs(bottom - etop);
+        penetration = fabs(pos_y - e->get_pos_y() - (height / 2.0f) - (e->get_height() / 2.0f));
         pos_y += (penetration + 0.0001f);
     }
     else if (collided_top)
     {
-        penetration = fabs(top - ebottom);
+        //penetration = fabs(top - ebottom);
+        penetration = fabs(e->get_pos_y() - pos_y - (height / 2.0f) - (e->get_height() / 2.0f));
         pos_y -= (penetration + 0.0001f);
     }
     if (collided_left)
     {
-        penetration = fabs(left - eright);
+        //penetration = fabs(left - eright);
+        penetration = fabs(pos_x - e->get_pos_x() - (width / 2.0f) - (e->get_width() / 2.0f));
         pos_x += (penetration + 0.0001f);
     }
     else if (collided_right)
     {
-        penetration = fabs(right - eleft);
+        //penetration = fabs(right - eleft);
+        penetration = fabs(e->get_pos_x() - pos_x - (width / 2.0f) - (e->get_width() / 2.0f));
         pos_x -= (penetration + 0.0001f);
     }
     
@@ -187,17 +202,6 @@ void Entity::bounce_off_of(Entity *e)
             pos_x -= (penetration + 0.0001f);
         }
     }*/
-    
-    if ((collided_top || collided_bottom))
-    {
-        velocity_y = 0.0f;
-        acceleration_y = 0.0f;
-    }
-    if ((collided_left || collided_right))
-    {
-        velocity_x = 0.0f;
-        acceleration_x = 0.0f;
-    }
 }
 
 void Entity::jump()
@@ -252,17 +256,17 @@ bool Entity::is_colliding_on_y_with(Entity *e)
     float eleft = e->get_pos_x() - (e->get_width());
     float eright = e->get_pos_x() + (e->get_width());
     
-    if (bottom <= etop && bottom > ebottom)
+    if (bottom < etop && bottom > ebottom)
     {
-        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
+        if ((left > eleft && left < eright) || (right > eleft && right < eright))
         {
             collided_bottom = true;
             jumped = false;
         }
     }
-    else if (top >= ebottom && top < etop)
+    else if (top > ebottom && top < etop)
     {
-        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
+        if ((left > eleft && left < eright) || (right > eleft && right < eright))
             collided_top = true;
     }
     
