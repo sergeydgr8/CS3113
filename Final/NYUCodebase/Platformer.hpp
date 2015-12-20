@@ -29,9 +29,11 @@ private:
     GLuint green_block_texture;
     GLuint red_block_texture;
     GLuint coin_texture;
+    GLuint growblock_texture;
     GLuint font_texture;
     std::vector<Block*> blocks;
     std::vector<Enemy*> enemies;
+    std::vector<Growblock*> growblocks;
     Coin *goal = new Coin();
     int lives;
     float startx;

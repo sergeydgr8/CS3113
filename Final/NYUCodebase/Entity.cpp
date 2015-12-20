@@ -19,14 +19,14 @@ Entity::Entity()
     velocity_y = 0.0f;
     acceleration_x = 0.0f;
     acceleration_y = 0.0f;
-    gravity = 25.0f;
+    gravity = 50.0f;
 }
 
 Entity::Entity(float x, float y, float ht, float wd, float vx,
                float vy, float ax, float ay, float gr) :
                height(ht), width(wd), pos_x(x), pos_y(y), velocity_x(vx),
                velocity_y(vy), acceleration_x(ax), acceleration_y(ay),
-               gravity(gr) { friction = 3.0f; jump_amount = height * 20.0f;}
+               gravity(gr) { friction = 3.0f; jump_amount = height;}
 
 void Entity::set_sprite(GLuint texture_id, float scount_x, float scount_y)
 {
@@ -52,6 +52,10 @@ void Entity::set_loc(float x, float y)
 
 bool Entity::is_colliding_with(Entity *e)
 {
+    collided_bottom = false;
+    collided_top = false;
+    collided_left = false;
+    collided_right = false;
     float top = pos_y + (height);
     float bottom = pos_y - (height);
     float left = pos_x - (width);
@@ -129,7 +133,8 @@ void Entity::bounce_off_of(Entity *e)
 
 void Entity::jump()
 {
-    velocity_y = jump_amount;
+    //velocity_y = jump_amount;
+    velocity_y = 4.3f;
     jumped = true;
 }
 
@@ -159,6 +164,14 @@ void Entity::reset()
     width = 0.25f;
     jumped = false;
     jump_amount = height * 20.0f;
+}
+
+void Entity::reset_collisions()
+{
+    collided_top = false;
+    collided_bottom = false;
+    collided_left = false;
+    collided_right = false;
 }
 
 void Entity::move_y(float elapsed)
@@ -316,4 +329,31 @@ Coin::Coin(float x, float y, float radius)
     pos_y = y;
     height = radius;
     width = radius;
+}
+
+//
+// Growblock definitions
+//
+
+Growblock::Growblock()
+{
+    pos_x = 0.0f;
+    pos_y = 0.0f;
+    height = 0.1f;
+    width = 0.1f;
+    active = true;
+}
+
+Growblock::Growblock(float x, float y)
+{
+    pos_x = x;
+    pos_y = y;
+    height = 0.1f;
+    width = 0.1f;
+    active = true;
+}
+
+void Growblock::hit()
+{
+    active = false;
 }

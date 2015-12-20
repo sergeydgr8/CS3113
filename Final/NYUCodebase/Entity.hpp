@@ -62,6 +62,7 @@ public:
     void move(float accel);
     void update_size(float amount);
     void reset();
+    void reset_collisions();
     
     void move_y(float elapsed);
     bool is_colliding_on_y_with(Entity *e);
@@ -95,6 +96,16 @@ class Coin : public Entity
 public:
     Coin();
     Coin(float x, float y, float radius);
+};
+
+class Growblock : public Entity
+{
+private:
+    bool active;
+public:
+    Growblock();
+    Growblock(float x, float y);
+    void hit();
 };
 
 #endif /* Entity_hpp */
