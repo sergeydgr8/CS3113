@@ -287,7 +287,56 @@ void Platformer::build_map()
             }
             break;
         case LEVEL4:
-            // render level 4
+            blocks.push_back(new Block(-1.5f, 1.75f, 0.4f, 0.75f, GREEN));
+            blocks.push_back(new Block(0.0f, 3.5f, 0.15f, 0.9f, RED));
+            blocks.push_back(new Block(1.0f, -2.5f, 0.15f, 1.5f, GREEN));
+            blocks.push_back(new Block(4.0f, -1.8f, 0.15f, 1.5f, GREEN));
+            blocks.push_back(new Block(-3.0f, -0.7f, 0.15f, 0.5f, GREEN));
+            blocks.push_back(new Block(-5.0f, 1.0f, 0.15f, 0.5f, GREEN));
+            
+            for (Block *b : blocks)
+            {
+                if (b->get_type() == GREEN)
+                    b->set_sprite(green_block_texture, 1, 1);
+                else if (b->get_type() == RED)
+                    b->set_sprite(red_block_texture, 1, 1);
+                b->render(program, model_matrix, 0);
+            }
+            
+            goal = new Coin(-1.5f, 4.0f, 0.5f);
+            goal->set_sprite(coin_texture, 1, 1);
+            goal->render(program, model_matrix, 0);
+            
+            if (finished_level)
+            {
+                finished_level = false;
+                startx = -1.5f;
+                starty = 2.9f;
+                player->set_loc(startx, starty);
+                player->reset();
+                player->update_size(-0.1f);
+                for (size_t i = 0; i < enemies.size(); i++)
+                    delete enemies[i];
+                enemies.clear();
+                for (size_t i = 0; i < growblocks.size(); i++)
+                    delete growblocks[i];
+                growblocks.clear();
+                growblocks.push_back(new Growblock(-0.35f, -1.5f));
+                growblocks.push_back(new Growblock(0.25f, -1.5f));
+                growblocks.push_back(new Growblock(0.85f, -1.5f));
+                growblocks.push_back(new Growblock(1.45f, -1.5f));
+                growblocks.push_back(new Growblock(2.05f, -1.5f));
+                growblocks.push_back(new Growblock(2.60f, -0.8f));
+                growblocks.push_back(new Growblock(3.20f, -0.8f));
+                growblocks.push_back(new Growblock(3.80f, -0.8f));
+                growblocks.push_back(new Growblock(4.40f, -0.8f));
+                growblocks.push_back(new Growblock(5.0f, -0.8f));
+            }
+            for (Growblock *g : growblocks)
+            {
+                g->set_sprite(growblock_texture, 1, 1);
+                g->render(program, model_matrix, 0);
+            }
             break;
         case LEVEL5:
             // render level 5

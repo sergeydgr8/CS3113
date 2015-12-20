@@ -277,12 +277,13 @@ void Entity::render(ShaderProgram *program, Matrix &model_matrix, int index)
 // Enemy definitions
 //
 
-Enemy::Enemy(float x, float y, float ht, float wd, float vx, float vy)
+Enemy::Enemy(float x, float y, float ht, float wd, ENEMY_TYPE tp, float vx, float vy)
 {
     pos_x = x;
     pos_y = y;
     height = ht;
     width = wd;
+    type = tp;
     velocity_x = vx;
     velocity_y = vy;
 }
@@ -291,6 +292,11 @@ void Enemy::move(float vx, float vy)
 {
     velocity_x = vx;
     velocity_y = vy;
+}
+
+ENEMY_TYPE Enemy::get_type()
+{
+    return type;
 }
 
 //

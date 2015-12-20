@@ -8,12 +8,6 @@
 
 #include "Utils.hpp"
 
-enum BLOCK_TYPE
-{
-    GREEN,
-    RED
-};
-
 class Entity
 {
 protected:
@@ -73,12 +67,27 @@ public:
     void render(ShaderProgram *program, Matrix &model_matrix, int index);
 };
 
+enum ENEMY_TYPE
+{
+    DEFINED_PATH,
+    FOLLOWING
+};
+
 class Enemy : public Entity
 {
+private:
+    ENEMY_TYPE type;
 public:
     Enemy();
-    Enemy(float x, float y, float ht, float wd, float vx = 0.0f, float vy = 0.0f);
+    Enemy(float x, float y, float ht, float wd, ENEMY_TYPE tp, float vx = 0.0f, float vy = 0.0f);
     void move(float vx, float vy);
+    ENEMY_TYPE get_type();
+};
+
+enum BLOCK_TYPE
+{
+    GREEN,
+    RED
 };
 
 class Block : public Entity
