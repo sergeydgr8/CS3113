@@ -106,6 +106,7 @@ public:
     Growblock();
     Growblock(float x, float y);
     void hit();
+    bool is_active();
 };
 
 #endif /* Entity_hpp */

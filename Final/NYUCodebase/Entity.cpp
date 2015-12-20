@@ -52,10 +52,6 @@ void Entity::set_loc(float x, float y)
 
 bool Entity::is_colliding_with(Entity *e)
 {
-    collided_bottom = false;
-    collided_top = false;
-    collided_left = false;
-    collided_right = false;
     float top = pos_y + (height);
     float bottom = pos_y - (height);
     float left = pos_x - (width);
@@ -68,30 +64,30 @@ bool Entity::is_colliding_with(Entity *e)
     
     if (bottom <= etop && bottom > ebottom)
     {
-        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
-        {
-            collided_bottom = true;
-            jumped = false;
-        }
+        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright)
+            || (left <= eleft && right >= eright))
+            return true;
     }
     else if (top >= ebottom && top < etop)
     {
-        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
-            collided_top = true;
+        if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright)
+            || (left <= eleft && right >= eright))
+            return true;
     }
     if (left <= eright && left > eleft)
     {
-        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
-            collided_left = true;
+        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom)
+            || (top >= etop && bottom <= ebottom))
+            return true;
     }
     else if (right >= eleft && right < eright)
     {
-        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
-            collided_right = true;
+        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom)
+            || (top >= etop && bottom <= ebottom))
+            return true;
     }
     
-    return (collided_top || collided_bottom ||
-            collided_left || collided_right);
+    return false;
 }
 
 void Entity::bounce_off_of(Entity *e)
@@ -198,7 +194,8 @@ bool Entity::is_colliding_on_y_with(Entity *e)
     
     if (bottom < etop && bottom > ebottom)
     {
-        if ((left > eleft && left < eright) || (right > eleft && right < eright))
+        if ((left > eleft && left < eright) || (right > eleft && right < eright)
+            || (left < eleft && right > eright))
         {
             collided_bottom = true;
             jumped = false;
@@ -206,7 +203,8 @@ bool Entity::is_colliding_on_y_with(Entity *e)
     }
     else if (top > ebottom && top < etop)
     {
-        if ((left > eleft && left < eright) || (right > eleft && right < eright))
+        if ((left > eleft && left < eright) || (right > eleft && right < eright)
+            || (left <= eleft && right >= eright))
             collided_top = true;
     }
     
@@ -238,12 +236,14 @@ bool Entity::is_colliding_on_x_with(Entity *e)
     
     if (left <= eright && left > eleft)
     {
-        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
+        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom)
+            || (top >= etop && bottom <= ebottom))
             collided_left = true;
     }
     else if (right >= eleft && right < eright)
     {
-        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom))
+        if ((top <= etop && top >= ebottom) || (bottom <= etop && bottom >= ebottom)
+            || (top >= etop && bottom <= ebottom))
             collided_right = true;
     }
     
@@ -358,4 +358,12 @@ Growblock::Growblock(float x, float y)
 void Growblock::hit()
 {
     active = false;
+    pos_x = -20.0f;
+    pos_y = -20.0f;
+    update_size(-0.1f);
+}
+
+bool Growblock::is_active()
+{
+    return active;
 }

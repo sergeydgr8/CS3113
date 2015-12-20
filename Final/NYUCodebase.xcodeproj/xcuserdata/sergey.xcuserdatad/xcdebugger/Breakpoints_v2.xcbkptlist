@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYUCodebase/Platformer.cpp"
-            timestampString = "472286091.748704"
+            timestampString = "472297575.610883"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "428"
-            endingLineNumber = "428"
+            startingLineNumber = "475"
+            endingLineNumber = "475"
             landmarkName = "Platformer::update(float elapsed)"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYUCodebase/Entity.cpp"
-            timestampString = "472286621.082438"
+            timestampString = "472298190.479303"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
             landmarkName = "Entity::update_size(float amount)"
             landmarkType = "5">
          </BreakpointContent>

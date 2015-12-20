@@ -145,12 +145,6 @@ void Platformer::build_map()
     for (size_t i = 0; i < blocks.size(); i++)
         delete blocks[i];
     blocks.clear();
-    for (size_t i = 0; i < enemies.size(); i++)
-        delete enemies[i];
-    enemies.clear();
-    for (size_t i = 0; i < growblocks.size(); i++)
-        delete growblocks[i];
-    growblocks.clear();
     //if (goal) delete goal;
     
     switch (state)
@@ -180,6 +174,12 @@ void Platformer::build_map()
                 starty = -2.5f;
                 player->set_loc(startx, starty);
                 player->reset();
+                for (size_t i = 0; i < enemies.size(); i++)
+                    delete enemies[i];
+                enemies.clear();
+                for (size_t i = 0; i < growblocks.size(); i++)
+                    delete growblocks[i];
+                growblocks.clear();
             }
             break;
         case LEVEL2:
@@ -220,14 +220,28 @@ void Platformer::build_map()
                 starty = -3.6f;
                 player->set_loc(startx, starty);
                 player->reset();
+                for (size_t i = 0; i < enemies.size(); i++)
+                    delete enemies[i];
+                enemies.clear();
+                for (size_t i = 0; i < growblocks.size(); i++)
+                    delete growblocks[i];
+                growblocks.clear();
             }
             break;
         case LEVEL3:
-            blocks.push_back(new Block(-1.5f, 2.0f, 0.4f, 0.75f, GREEN));
+            blocks.push_back(new Block(-1.5f, 2.0f, 0.3f, 0.75f, GREEN));
             blocks.push_back(new Block(0.0f, 0.3f, 0.15f, 0.3f, RED));
             blocks.push_back(new Block(-1.6f, -0.6f, 0.15f, 1.9f, GREEN));
             blocks.push_back(new Block(-2.5f, 0.3f, 0.15f, 0.3f, RED));
             blocks.push_back(new Block(2.0f, 0.3f, 0.15f, 0.3f, GREEN));
+            blocks.push_back(new Block(2.0f, -1.1f, 0.15f, 0.3f, GREEN));
+            blocks.push_back(new Block(4.0f, -1.8f, 0.15f, 0.3f, GREEN));
+            blocks.push_back(new Block(6.0f, -1.1f, 0.15f, 0.3f, GREEN));
+            blocks.push_back(new Block(-6.0f, -0.6f, 0.15f, 0.3f, GREEN));
+            blocks.push_back(new Block(-3.8f, -0.9f, 0.15f, 0.3f, RED));
+            blocks.push_back(new Block(-4.4f, -1.5f, 0.15f, 0.3f, GREEN));
+            blocks.push_back(new Block(-4.9f, -3.2f, 0.15f, 0.3f, GREEN));
+            blocks.push_back(new Block(-3.0f, -4.2f, 0.15f, 0.3f, GREEN));
             for (Block *b : blocks)
             {
                 if (b->get_type() == GREEN)
@@ -236,9 +250,11 @@ void Platformer::build_map()
                     b->set_sprite(red_block_texture, 1, 1);
                 b->render(program, model_matrix, 0);
             }
-            goal = new Coin(-1.5f, 4.0f, 0.5f);
+            
+            goal = new Coin(-1.5f, 4.0f, 0.4f);
             goal->set_sprite(coin_texture, 1, 1);
             goal->render(program, model_matrix, 0);
+
             if (finished_level)
             {
                 finished_level = false;
@@ -246,6 +262,22 @@ void Platformer::build_map()
                 starty = 2.9f;
                 player->set_loc(startx, starty);
                 player->reset();
+                for (size_t i = 0; i < enemies.size(); i++)
+                    delete enemies[i];
+                enemies.clear();
+                for (size_t i = 0; i < growblocks.size(); i++)
+                    delete growblocks[i];
+                growblocks.clear();
+                growblocks.push_back(new Growblock(-0.65f, 1.8f));
+                growblocks.push_back(new Growblock(1.8f, -0.3f));
+                growblocks.push_back(new Growblock(5.8f, -0.3f));
+                growblocks.push_back(new Growblock(-4.9f, -2.0f));
+                growblocks.push_back(new Growblock(-3.3f, -3.3f));
+            }
+            for (Growblock *g : growblocks)
+            {
+                g->set_sprite(growblock_texture, 1, 1);
+                g->render(program, model_matrix, 0);
             }
             break;
         case LEVEL4:
@@ -272,6 +304,11 @@ void Platformer::build_map()
         default:
             break;
     }
+}
+
+bool Platformer::growblock_is_collided(Growblock *g)
+{
+    return player->is_colliding_with(g);
 }
 
 void Platformer::window_setup()
@@ -448,6 +485,17 @@ void Platformer::update(float elapsed)
         }
     }
     
+    for (size_t i = 0; i < growblocks.size(); i++)
+    {
+        if (player->is_colliding_with(growblocks[i]))
+        {
+            player->update_size(0.05f);
+            growblocks[i]->hit();
+            //growblocks[i]->update_size(-0.1f);
+            growblocks[i]->render(program, model_matrix, 0);
+        }
+    }
+
     if (player->is_colliding_on_y_with(goal) || player->is_colliding_on_x_with(goal))
     {
         if (player->get_height() >= goal->get_height())
@@ -506,6 +554,7 @@ void Platformer::update(float elapsed)
                 lives -= 1;
                 player->reset();
                 player->set_loc(startx, starty);
+                finished_level = true;
             }
             else
             {
@@ -522,6 +571,7 @@ void Platformer::update(float elapsed)
             lives -= 1;
             player->reset();
             player->set_loc(startx, starty);
+            finished_level = true;
         }
         else
         {
@@ -537,6 +587,7 @@ void Platformer::update(float elapsed)
             lives -= 1;
             player->reset();
             player->set_loc(startx, starty);
+            finished_level = true;
         }
         else
         {

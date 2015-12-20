@@ -55,6 +55,8 @@ public:
     void build_map();
     void render_map();
     
+    bool growblock_is_collided(Growblock *g);
+    
     void window_setup();
     void texture_setup();
     void process_events();
