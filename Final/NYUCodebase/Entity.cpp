@@ -19,7 +19,7 @@ Entity::Entity()
     velocity_y = 0.0f;
     acceleration_x = 0.0f;
     acceleration_y = 0.0f;
-    gravity = 15.0f;
+    gravity = 25.0f;
 }
 
 Entity::Entity(float x, float y, float ht, float wd, float vx,
@@ -62,32 +62,6 @@ bool Entity::is_colliding_with(Entity *e)
     float eleft = e->get_pos_x() - (e->get_width());
     float eright = e->get_pos_x() + (e->get_width());
     
-    /*if (bottom < etop && fabs(left - eleft) < e->get_width() &&
-        fabs(right - eright) < e->get_width())
-    {
-        collided_bottom = true;
-        jumped = false;
-    }
-    
-    else if (top > ebottom && fabs(left - eleft) < e->get_width() &&
-             fabs(right - eright) < e->get_width())
-    {
-        collided_top = true;
-    }
-    
-    if (left < eright && fabs(top - etop) < e->get_height() &&
-        fabs(bottom - ebottom) < e->get_height())
-    {
-        collided_left = true;
-    }
-    
-    else if (right > eleft && fabs(top - etop) < e->get_height() &&
-             fabs(bottom - ebottom) < e->get_height())
-    {
-        collided_right = true;
-    }*/
-    
-    
     if (bottom <= etop && bottom > ebottom)
     {
         if ((left >= eleft && left <= eright) || (right >= eleft && right <= eright))
@@ -129,39 +103,25 @@ void Entity::bounce_off_of(Entity *e)
         acceleration_x = 0.0f;
     }
     
-    float top = pos_y + (height);
-    float bottom = pos_y - (height);
-    float left = pos_x - (width);
-    float right = pos_x + (width);
-    
-    float etop = e->get_pos_y() + (e->get_height());
-    float ebottom = e->get_pos_y() - (e->get_height());
-    float eleft = e->get_pos_x() - (e->get_width());
-    float eright = e->get_pos_x() + (e->get_width());
-    
     float penetration = 0.0f;
     
     if (collided_bottom)
     {
-        //penetration = fabs(bottom - etop);
         penetration = fabs(pos_y - e->get_pos_y() - height - e->get_height());
         pos_y += (penetration + 0.0001f);
     }
     else if (collided_top)
     {
-        //penetration = fabs(top - ebottom);
         penetration = fabs(e->get_pos_y() - pos_y - height - e->get_height());
         pos_y -= (penetration + 0.0001f);
     }
     if (collided_left)
     {
-        //penetration = fabs(left - eright);
         penetration = fabs(pos_x - e->get_pos_x() - width - e->get_width());
         pos_x += (penetration + 0.0001f);
     }
     else if (collided_right)
     {
-        //penetration = fabs(right - eleft);
         penetration = fabs(e->get_pos_x() - pos_x - width - e->get_width());
         pos_x -= (penetration + 0.0001f);
     }
@@ -342,10 +302,10 @@ BLOCK_TYPE Block::get_type()
 // Coin definitions
 //
 
-Coin::Coin(float x, float y, float diam)
+Coin::Coin(float x, float y, float radius)
 {
     pos_x = x;
     pos_y = y;
-    height = diam;
-    width = diam;
+    height = radius;
+    width = radius;
 }

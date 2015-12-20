@@ -28,6 +28,7 @@
 		A57E38B31C0E87CC000EB50F /* green_block.png in Resources */ = {isa = PBXBuildFile; fileRef = A57E38B01C0E87CC000EB50F /* green_block.png */; };
 		A57E38B41C0E87CC000EB50F /* red_block.png in Resources */ = {isa = PBXBuildFile; fileRef = A57E38B11C0E87CC000EB50F /* red_block.png */; };
 		A57E38B81C0EAC70000EB50F /* font1.png in Resources */ = {isa = PBXBuildFile; fileRef = A57E38B71C0EAC70000EB50F /* font1.png */; };
+		A5DAE39D1C2630A200EACEB2 /* coin.png in Resources */ = {isa = PBXBuildFile; fileRef = A5DAE39C1C2630A200EACEB2 /* coin.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		A57E38B01C0E87CC000EB50F /* green_block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_block.png; sourceTree = "<group>"; };
 		A57E38B11C0E87CC000EB50F /* red_block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_block.png; sourceTree = "<group>"; };
 		A57E38B71C0EAC70000EB50F /* font1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font1.png; sourceTree = "<group>"; };
+		A5DAE39C1C2630A200EACEB2 /* coin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coin.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 		6D5A86B419AE5C710066C1FD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A5DAE39C1C2630A200EACEB2 /* coin.png */,
 				A57E38B71C0EAC70000EB50F /* font1.png */,
 				A57E38AF1C0E87CC000EB50F /* emojis.png */,
 				A57E38B01C0E87CC000EB50F /* green_block.png */,
@@ -245,6 +248,7 @@
 				6DE9D2F11BA6AB8C002D599C /* fragment_textured.glsl in Resources */,
 				6D5A86C619AE5C710066C1FD /* Images.xcassets in Resources */,
 				6D5A86BE19AE5C710066C1FD /* Credits.rtf in Resources */,
+				A5DAE39D1C2630A200EACEB2 /* coin.png in Resources */,
 				6DEF23C41B96CC2600BCE792 /* vertex.glsl in Resources */,
 				A57E38B41C0E87CC000EB50F /* red_block.png in Resources */,
 				6DC7076A1BA7273500225B7D /* vertex_textured.glsl in Resources */,

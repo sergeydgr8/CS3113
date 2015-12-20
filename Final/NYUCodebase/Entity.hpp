@@ -94,7 +94,7 @@ class Coin : public Entity
 {
 public:
     Coin();
-    Coin(float x, float y, float diam);
+    Coin(float x, float y, float radius);
 };
 
 #endif /* Entity_hpp */

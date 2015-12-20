@@ -11,8 +11,11 @@ Platformer::Platformer()
     state = TITLE_SCREEN;
     window_setup();
     texture_setup();
-    player = new Entity(-5.5f, -3.0f, 0.25f, 0.25f, 0.0f, 0.0f, 0.0f, 0.0f, 5.0f);
+    startx = -5.5f;
+    starty = -3.0f;
+    player = new Entity(startx, starty, 0.25f, 0.25f, 0.0f, 0.0f, 0.0f, 0.0f, 5.0f);
     player->set_sprite(emojis_texture, 8.0f, 1.0f);
+    lives = 5;
 }
 
 Platformer::~Platformer()
@@ -105,6 +108,7 @@ void Platformer::build_map()
     for (size_t i = 0; i < enemies.size(); i++)
         delete enemies[i];
     enemies.clear();
+    if (goal) delete goal;
     
     switch (state)
     {
@@ -114,7 +118,7 @@ void Platformer::build_map()
             blocks.push_back(new Block(-1.8f, -2.0f, 0.15f, 0.5f, GREEN));
             blocks.push_back(new Block(-2.7f, -0.2f, 0.15f, 0.5f, GREEN));
             blocks.push_back(new Block(0.2f, 0.7f, 0.15f, 0.5f, GREEN));
-            blocks.push_back(new Block(3.5f, 1.0f, 0.7f, 0.5f, GREEN));
+            blocks.push_back(new Block(3.5f, 1.0f, 0.15f, 0.5f, GREEN));
             for (Block *b : blocks)
             {
                 if (b->get_type() == GREEN)
@@ -123,10 +127,15 @@ void Platformer::build_map()
                     b->set_sprite(red_block_texture, 1, 1);
                 b->render(program, model_matrix, 0);
             }
+            goal = new Coin(6.5f, 1.5f, 0.2f);
+            goal->set_sprite(coin_texture, 1, 1);
+            goal->render(program, model_matrix, 0);
             if (finished_level)
             {
                 finished_level = false;
-                player->set_loc(-5.5f, -2.5f);
+                startx = -5.5f;
+                starty = -2.5f;
+                player->set_loc(startx, starty);
                 player->reset();
             }
             break;
@@ -159,20 +168,6 @@ void Platformer::build_map()
             break;
         default:
             break;
-    }
-}
-
-void Platformer::check_for_collisions()
-{
-    for (Block *b : blocks)
-    {
-        if (player->is_colliding_with(b))
-        {
-            if (b->get_type() == GREEN)
-                player->bounce_off_of(b);
-            else if (b->get_type() == RED)
-                player->update_size(-0.05f);
-        }
     }
 }
 
@@ -219,6 +214,7 @@ void Platformer::texture_setup()
     green_block_texture = utilities.LoadRGBATexture(RESOURCE_FOLDER"green_block.png");
     red_block_texture = utilities.LoadRGBATexture(RESOURCE_FOLDER"red_block.png");
     font_texture = utilities.LoadRGBATexture(RESOURCE_FOLDER"font1.png");
+    coin_texture = utilities.LoadRGBATexture(RESOURCE_FOLDER"coin.png");
 }
 
 void Platformer::process_events()
@@ -281,9 +277,9 @@ void Platformer::process_events()
                             player->jump();
                 }
                 if (keys[SDL_SCANCODE_LEFT])
-                    player->move(-5.0f);
+                    player->move(-7.5f);
                 else if (keys[SDL_SCANCODE_RIGHT])
-                    player->move(5.0f);
+                    player->move(7.5f);
                 else player->move(0.0f);
             }
             else if (state == GAME_OVER)
@@ -311,9 +307,6 @@ void Platformer::update(float elapsed)
     if (state == TITLE_SCREEN || state == GAME_OVER)
         return;
     
-    //player->update(elapsed);
-    //check_for_collisions();
-    
     player->move_y(elapsed);
     for (Block *b : blocks)
     {
@@ -334,6 +327,19 @@ void Platformer::update(float elapsed)
                 player->bounce_off_of(b);
             else if (b->get_type() == RED)
                 player->update_size(-0.05f);
+        }
+    }
+    
+    if (player->get_pos_y() + player->get_height() < -8.0f)
+    {
+        if (lives > 1)
+        {
+            lives -= 1;
+            player->set_loc(startx, starty);
+        }
+        else
+        {
+            state = GAME_OVER;
         }
     }
 }
@@ -361,6 +367,11 @@ void Platformer::render()
         {
             build_map();
             player->render(program, model_matrix, 0);
+            model_matrix.identity();
+            model_matrix.Translate(-7.75f, 4.20f, 0.0f);
+            program->setModelMatrix(model_matrix);
+            std::string lives_string = "Lives: " + std::to_string(lives);
+            utilities.DrawText(program, font_texture, lives_string, 0.3f, -0.16f);
         }
         
         SDL_GL_SwapWindow(display_window);

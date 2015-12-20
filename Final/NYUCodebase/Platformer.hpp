@@ -28,14 +28,20 @@ private:
     GLuint emojis_texture;
     GLuint green_block_texture;
     GLuint red_block_texture;
+    GLuint coin_texture;
     GLuint font_texture;
     std::vector<Block*> blocks;
     std::vector<Enemy*> enemies;
+    Coin *goal;
+    int lives;
+    float startx;
+    float starty;
     
     GameState state;
     
     bool cheatmode = false;
     bool finished_level = true;
+    bool win = false;
     
 public:
     Platformer();
@@ -45,7 +51,6 @@ public:
     
     void build_map();
     void render_map();
-    void check_for_collisions();
     
     void window_setup();
     void texture_setup();
