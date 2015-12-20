@@ -425,7 +425,8 @@ void Platformer::update(float elapsed)
                 player->bounce_off_of(b);
             else if (b->get_type() == RED)
             {
-                player->update_size(-0.5f);
+                player->update_size(-0.001f);
+                player->render(program, model_matrix, 0);
                 player->reset_collisions();
             }
         }
@@ -440,7 +441,8 @@ void Platformer::update(float elapsed)
                 player->bounce_off_of(b);
             else if (b->get_type() == RED)
             {
-                player->update_size(-0.5f);
+                player->update_size(-0.001f);
+                player->render(program, model_matrix, 0);
                 player->reset_collisions();
             }
         }
@@ -514,6 +516,21 @@ void Platformer::update(float elapsed)
     }
     
     if (player->get_pos_y() + player->get_height() < -8.0f)
+    {
+        if (lives > 1)
+        {
+            lives -= 1;
+            player->reset();
+            player->set_loc(startx, starty);
+        }
+        else
+        {
+            lives = 6;
+            state = GAME_OVER;
+        }
+    }
+    
+    if (player->get_height() <= 0 || player->get_width() <= 0)
     {
         if (lives > 1)
         {

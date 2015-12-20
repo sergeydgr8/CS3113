@@ -148,6 +148,7 @@ void Entity::update_size(float amount)
     float ratio = width / height;
     width += amount;
     height += (amount / ratio);
+    sprite.UpdateSize(width, height);
 }
 
 void Entity::reset()
@@ -164,6 +165,7 @@ void Entity::reset()
     width = 0.25f;
     jumped = false;
     jump_amount = height * 20.0f;
+    sprite.UpdateSize(width, height);
 }
 
 void Entity::reset_collisions()

@@ -72,6 +72,7 @@ namespace Utilities
         SheetSprite();
         SheetSprite(unsigned int texture_id, float sprite_count_x, float sprite_count_y, float width, float height, float size);
         void Draw(ShaderProgram *program, Matrix &model_matrix, int index, float x, float y);
+        void UpdateSize(float w, float h);
     };
 }
 

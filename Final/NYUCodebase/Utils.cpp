@@ -144,4 +144,12 @@ namespace Utilities
         glDisableVertexAttribArray(program->positionAttribute);
         glDisableVertexAttribArray(program->texCoordAttribute);
     }
+    
+    void SheetSprite::UpdateSize(float w, float h)
+    {
+        //size = width / w;
+        size *= (w / width);
+        width = w;
+        height = h;
+    }
 }
