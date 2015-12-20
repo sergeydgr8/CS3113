@@ -33,6 +33,7 @@ Platformer::~Platformer()
 void Platformer::render_title_screen()
 {
     finished_level = true;
+    lives = 5;
     model_matrix.identity();
     model_matrix.Translate(-5.0f, 4.0f, 0.0f);
     program->setModelMatrix(model_matrix);
@@ -147,7 +148,7 @@ void Platformer::build_map()
     for (size_t i = 0; i < enemies.size(); i++)
         delete enemies[i];
     enemies.clear();
-    if (goal) delete goal;
+    //if (goal) delete goal;
     
     switch (state)
     {
@@ -179,7 +180,26 @@ void Platformer::build_map()
             }
             break;
         case LEVEL2:
-            // render level 2
+            blocks.push_back(new Block(-3.5f, -4.2f, 0.15f, 0.5f, GREEN));
+            for (Block *b : blocks)
+            {
+                if (b->get_type() == GREEN)
+                    b->set_sprite(green_block_texture, 1, 1);
+                else if (b->get_type() == RED)
+                    b->set_sprite(red_block_texture, 1, 1);
+                b->render(program, model_matrix, 0);
+            }
+            goal = new Coin(6.5f, 1.5f, 0.2f);
+            goal->set_sprite(coin_texture, 1, 1);
+            goal->render(program, model_matrix, 0);
+            if (finished_level)
+            {
+                finished_level = false;
+                startx = -3.5f;
+                starty = -3.0f;
+                player->set_loc(startx, starty);
+                player->reset();
+            }
             break;
         case LEVEL3:
             // render level 3
@@ -362,6 +382,7 @@ void Platformer::update(float elapsed)
                 player->update_size(-0.05f);
         }
     }
+    
     player->move_x(elapsed);
     for (Block *b : blocks)
     {
@@ -371,6 +392,56 @@ void Platformer::update(float elapsed)
                 player->bounce_off_of(b);
             else if (b->get_type() == RED)
                 player->update_size(-0.05f);
+        }
+    }
+    
+    if (player->is_colliding_on_y_with(goal) || player->is_colliding_on_x_with(goal))
+    {
+        switch (state)
+        {
+            case LEVEL1:
+                finished_level = true;
+                state = LEVEL2;
+                break;
+            case LEVEL2:
+                finished_level = true;
+                state = LEVEL3;
+                break;
+            case LEVEL3:
+                finished_level = true;
+                state = LEVEL4;
+                break;
+            case LEVEL4:
+                finished_level = true;
+                state = LEVEL5;
+                break;
+            case LEVEL5:
+                finished_level = true;
+                state = LEVEL6;
+                break;
+            case LEVEL6:
+                finished_level = true;
+                state = LEVEL7;
+                break;
+            case LEVEL7:
+                finished_level = true;
+                state = LEVEL8;
+                break;
+            case LEVEL8:
+                finished_level = true;
+                state = LEVEL9;
+                break;
+            case LEVEL9:
+                finished_level = true;
+                state = LEVEL10;
+                break;
+            case LEVEL10:
+                finished_level = true;
+                win = true;
+                state = GAME_OVER;
+                break;
+            default:
+                break;
         }
     }
     
@@ -384,6 +455,7 @@ void Platformer::update(float elapsed)
         }
         else
         {
+            lives = 6;
             state = GAME_OVER;
         }
     }
@@ -445,7 +517,6 @@ bool Platformer::run_game()
     
     time_left_over = fixed_elapsed;
     
-    //update(elapsed);
     render();
     return done;
 }

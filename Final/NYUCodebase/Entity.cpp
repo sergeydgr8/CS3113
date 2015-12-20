@@ -302,6 +302,14 @@ BLOCK_TYPE Block::get_type()
 // Coin definitions
 //
 
+Coin::Coin()
+{
+    pos_x = 0.0f;
+    pos_y = 0.0f;
+    height = 1.0f;
+    width = 1.0f;
+}
+
 Coin::Coin(float x, float y, float radius)
 {
     pos_x = x;

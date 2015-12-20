@@ -32,7 +32,7 @@ private:
     GLuint font_texture;
     std::vector<Block*> blocks;
     std::vector<Enemy*> enemies;
-    Coin *goal;
+    Coin *goal = new Coin();
     int lives;
     float startx;
     float starty;
