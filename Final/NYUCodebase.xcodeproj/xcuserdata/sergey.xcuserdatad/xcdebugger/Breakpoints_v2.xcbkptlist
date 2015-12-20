@@ -22,16 +22,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYUCodebase/Platformer.cpp"
-            timestampString = "472190126.187397"
+            timestampString = "472258769.931317"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
-            landmarkName = "Platformer::check_for_collisions()"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
+            landmarkName = "Platformer::update(float elapsed)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
