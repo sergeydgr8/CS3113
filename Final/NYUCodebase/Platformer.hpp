@@ -48,6 +48,7 @@ public:
     ~Platformer();
     
     void render_title_screen();
+    void render_game_over_screen();
     
     void build_map();
     void render_map();

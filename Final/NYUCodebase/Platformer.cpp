@@ -49,6 +49,7 @@ void Platformer::render_title_screen()
     utilities.DrawText(program, font_texture, "INSTRUCTIONS:", 0.5f, -0.2f);
     
     Utilities::SheetSprite emojis(emojis_texture, 8.0f, 1.0f, 1.0f, 1.0f, 0.75f);
+    Utilities::SheetSprite coin(coin_texture, 1.0f, 1.0f, 1.0f, 1.0f, 0.75f);
     
     emojis.Draw(program, model_matrix, 0, -5.5f, 2.1f);
     model_matrix.identity();
@@ -86,9 +87,19 @@ void Platformer::render_title_screen()
     program->setModelMatrix(model_matrix);
     utilities.DrawText(program, font_texture, "Avoid these, they shrink you:", 0.3f, -0.16f);
     
-    emojis.Draw(program, model_matrix, 7, -5.5f, -2.6f);
+    coin.Draw(program, model_matrix, 0, -5.5, -2.6f);
     model_matrix.identity();
-    model_matrix.Translate(-4.75f, -2.6f, 0.0f);
+    model_matrix.Translate(-4.75f, -2.45f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_texture, "This is your goal. You can only", 0.3f, -0.16f);
+    model_matrix.identity();
+    model_matrix.Translate(-4.75f, -2.75f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_texture, "get it if you're bigger than it.", 0.3f, -0.16f);
+    
+    emojis.Draw(program, model_matrix, 7, 1.25f, -2.6f);
+    model_matrix.identity();
+    model_matrix.Translate(2.0f, -2.6f, 0.0f);
     program->setModelMatrix(model_matrix);
     utilities.DrawText(program, font_texture, "Need to quit? Hit ESC.", 0.3f, -0.16f);
     
@@ -96,6 +107,34 @@ void Platformer::render_title_screen()
     model_matrix.Translate(-5.1f, -4.0f, 0.0f);
     program->setModelMatrix(model_matrix);
     utilities.DrawText(program, font_texture, "Ready? Press Space or Enter to start.", 0.5f, -0.2f);
+}
+
+void Platformer::render_game_over_screen()
+{
+    if (win)
+    {
+        model_matrix.identity();
+        model_matrix.Translate(-3.5, 0.0f, 0.0f);
+        program->setModelMatrix(model_matrix);
+        utilities.DrawText(program, font_texture, "YOU WIN!", 2.0f, -1.0f);
+        
+        model_matrix.identity();
+        model_matrix.Translate(-5.8f, -4.0f, 0.0f);
+        program->setModelMatrix(model_matrix);
+        utilities.DrawText(program, font_texture, "Press space, enter, or escape to go back to main menu.", 0.5f, -0.27f);
+    }
+    else
+    {
+        model_matrix.identity();
+        model_matrix.Translate(-3.75f, 0.0f, 0.0f);
+        program->setModelMatrix(model_matrix);
+        utilities.DrawText(program, font_texture, "You lose.", 2.0f, -1.0f);
+        
+        model_matrix.identity();
+        model_matrix.Translate(-5.8f, -4.0f, 0.0f);
+        program->setModelMatrix(model_matrix);
+        utilities.DrawText(program, font_texture, "Press space, enter, or escape to go back to main menu.", 0.5f, -0.27f);
+    }
 }
 
 // TODO: Build all the levels
@@ -260,6 +299,10 @@ void Platformer::process_events()
                             state = LEVEL9;
                         if (event.key.keysym.scancode == SDL_SCANCODE_0)
                             state = LEVEL10;
+                        if (event.key.keysym.scancode == SDL_SCANCODE_G) {
+                            //win = true;
+                            state = GAME_OVER;
+                        }
                     }
                 }
             }
@@ -288,7 +331,8 @@ void Platformer::process_events()
                 {
                     if (event.key.keysym.scancode == SDL_SCANCODE_RETURN ||
                         event.key.keysym.scancode == SDL_SCANCODE_RETURN2 ||
-                        event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+                        event.key.keysym.scancode == SDL_SCANCODE_SPACE ||
+                        event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
                         state = TITLE_SCREEN;
                 }
             }
@@ -335,6 +379,7 @@ void Platformer::update(float elapsed)
         if (lives > 1)
         {
             lives -= 1;
+            player->reset();
             player->set_loc(startx, starty);
         }
         else
@@ -361,7 +406,7 @@ void Platformer::render()
         }
         else if (state == GAME_OVER)
         {
-            // render game over screen
+            render_game_over_screen();
         }
         else
         {
