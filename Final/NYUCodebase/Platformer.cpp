@@ -51,6 +51,7 @@ void Platformer::render_title_screen()
     
     Utilities::SheetSprite emojis(emojis_texture, 8.0f, 1.0f, 1.0f, 1.0f, 0.75f);
     Utilities::SheetSprite coin(coin_texture, 1.0f, 1.0f, 1.0f, 1.0f, 0.75f);
+    Utilities::SheetSprite growblock(growblock_texture, 1.0f, 1.0f, 1.0f, 1.0f, 0.3f);
     
     emojis.Draw(program, model_matrix, 0, -5.5f, 2.1f);
     model_matrix.identity();
@@ -75,32 +76,38 @@ void Platformer::render_title_screen()
     utilities.DrawText(program, font_texture, "This is another enemy. These follow you and you cannot beat them.", 0.3f, -0.16f);
     
     Utilities::SheetSprite greenblock(green_block_texture, 1.0f, 1.0f, 2.5f, 0.5f, 0.5f);
-    greenblock.Draw(program, model_matrix, 0, -3.0f, -1.3f);
+    greenblock.Draw(program, model_matrix, 0, -3.0f, -1.15f);
     model_matrix.identity();
-    model_matrix.Translate(-4.75f, -0.8f, 0.0f);
+    model_matrix.Translate(-4.75f, -0.65f, 0.0f);
     program->setModelMatrix(model_matrix);
     utilities.DrawText(program, font_texture, "These are basic platforms:", 0.3f, -0.16f);
     
     Utilities::SheetSprite redblock(red_block_texture, 1.0f, 1.0f, 2.5f, 0.5f, 0.5f);
-    redblock.Draw(program, model_matrix, 0, 3.0f, -1.3f);
+    redblock.Draw(program, model_matrix, 0, 3.0f, -1.15f);
     model_matrix.identity();
-    model_matrix.Translate(1.0f, -0.8f, 0.0f);
+    model_matrix.Translate(1.0f, -0.65f, 0.0f);
     program->setModelMatrix(model_matrix);
     utilities.DrawText(program, font_texture, "Avoid these, they shrink you:", 0.3f, -0.16f);
     
-    coin.Draw(program, model_matrix, 0, -5.5, -2.6f);
+    coin.Draw(program, model_matrix, 0, -5.5, -2.0f);
     model_matrix.identity();
-    model_matrix.Translate(-4.75f, -2.45f, 0.0f);
+    model_matrix.Translate(-4.75f, -1.85f, 0.0f);
     program->setModelMatrix(model_matrix);
     utilities.DrawText(program, font_texture, "This is your goal. You can only", 0.3f, -0.16f);
     model_matrix.identity();
-    model_matrix.Translate(-4.75f, -2.75f, 0.0f);
+    model_matrix.Translate(-4.75f, -2.15f, 0.0f);
     program->setModelMatrix(model_matrix);
     utilities.DrawText(program, font_texture, "get it if you're bigger than it.", 0.3f, -0.16f);
     
-    emojis.Draw(program, model_matrix, 7, 1.25f, -2.6f);
+    growblock.Draw(program, model_matrix, 0, 1.25f, -2.0f);
     model_matrix.identity();
-    model_matrix.Translate(2.0f, -2.6f, 0.0f);
+    model_matrix.Translate(1.75f, -2.0f, 0.0f);
+    program->setModelMatrix(model_matrix);
+    utilities.DrawText(program, font_texture, "Eat these to grow.", 0.3f, -0.16f);
+    
+    emojis.Draw(program, model_matrix, 7, -5.5f, -3.0f);
+    model_matrix.identity();
+    model_matrix.Translate(-4.75f, -3.0f, 0.0f);
     program->setModelMatrix(model_matrix);
     utilities.DrawText(program, font_texture, "Need to quit? Hit ESC.", 0.3f, -0.16f);
     
@@ -145,7 +152,6 @@ void Platformer::build_map()
     for (size_t i = 0; i < blocks.size(); i++)
         delete blocks[i];
     blocks.clear();
-    //if (goal) delete goal;
     
     switch (state)
     {
