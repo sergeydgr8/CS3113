@@ -337,8 +337,8 @@ void Enemy::move_towards(Entity *e, float elapsed)
 {
     float magnitude = sqrtf(powf(fabsf(pos_y - e->get_pos_y()), 2) +
                             powf(fabsf(pos_x - e->get_pos_x()), 2));
-    velocity_y = (pos_y - e->get_pos_y()) * 0.5f / magnitude;
-    velocity_x = (pos_x - e->get_pos_x()) * 0.5f / magnitude;
+    velocity_y = (pos_y - e->get_pos_y()) * 0.4f / magnitude;
+    velocity_x = (pos_x - e->get_pos_x()) * 0.4f / magnitude;
     
     pos_y -= velocity_y * elapsed;
     pos_x -= velocity_x * elapsed;
