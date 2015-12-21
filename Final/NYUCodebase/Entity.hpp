@@ -73,6 +73,13 @@ enum ENEMY_TYPE
     FOLLOWING
 };
 
+enum ENEMY_CHANNEL
+{
+    ENEMY1,
+    ENEMY2,
+    ENEMY3
+};
+
 class Enemy : public Entity
 {
 private:
@@ -80,9 +87,10 @@ private:
     bool alive;
     float original_x;
     float original_y;
+    ENEMY_CHANNEL channel;
 public:
     Enemy();
-    Enemy(float x, float y, float ht, float wd, ENEMY_TYPE tp, float vx = 0.0f, float vy = 0.0f);
+    Enemy(float x, float y, float ht, float wd, ENEMY_TYPE tp, float vx = 0.0f, float vy = 0.0f, ENEMY_CHANNEL ch = ENEMY1);
     void move(float vx, float vy);
     ENEMY_TYPE get_type();
     bool is_alive();
@@ -92,6 +100,8 @@ public:
     float get_original_x();
     float get_original_y();
     void move_towards(Entity *e, float elapsed);
+    void set_channel(ENEMY_CHANNEL c);
+    ENEMY_CHANNEL get_channel();
 };
 
 enum BLOCK_TYPE

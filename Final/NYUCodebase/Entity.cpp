@@ -277,7 +277,7 @@ void Entity::render(ShaderProgram *program, Matrix &model_matrix, int index)
 // Enemy definitions
 //
 
-Enemy::Enemy(float x, float y, float ht, float wd, ENEMY_TYPE tp, float vx, float vy)
+Enemy::Enemy(float x, float y, float ht, float wd, ENEMY_TYPE tp, float vx, float vy, ENEMY_CHANNEL ch)
 {
     pos_x = x;
     pos_y = y;
@@ -289,6 +289,7 @@ Enemy::Enemy(float x, float y, float ht, float wd, ENEMY_TYPE tp, float vx, floa
     velocity_x = vx;
     velocity_y = vy;
     alive = true;
+    channel = ch;
 }
 
 void Enemy::move(float vx, float vy)
@@ -342,6 +343,16 @@ void Enemy::move_towards(Entity *e, float elapsed)
     
     pos_y -= velocity_y * elapsed;
     pos_x -= velocity_x * elapsed;
+}
+
+void Enemy::set_channel(ENEMY_CHANNEL c)
+{
+    channel = c;
+}
+
+ENEMY_CHANNEL Enemy::get_channel()
+{
+    return channel;
 }
 
 //

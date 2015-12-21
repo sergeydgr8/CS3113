@@ -7,7 +7,7 @@
 
 Platformer::Platformer()
 {
-    cheatmode = true; // uncomment this to jump to a certain level from title screen
+    //cheatmode = true; // uncomment this to jump to a certain level from title screen
     state = TITLE_SCREEN;
     window_setup();
     texture_setup();
@@ -34,6 +34,7 @@ void Platformer::render_title_screen()
 {
     finished_level = true;
     lives = 5;
+    win = false;
     model_matrix.identity();
     model_matrix.Translate(-5.0f, 4.0f, 0.0f);
     program->setModelMatrix(model_matrix);
@@ -484,7 +485,52 @@ void Platformer::build_map()
             }
             break;
         case LEVEL9:
-            // render level 9
+            blocks.push_back(new Block(0.0f, -3.0f, 0.15f, 7.0f, GREEN));
+            blocks.push_back(new Block(1.5f, -2.7f, 0.15f, 3.0f, RED));
+            blocks.push_back(new Block(1.0f, -0.5f, 0.15f, 4.5f, GREEN));
+            blocks.push_back(new Block(1.0f, -0.8f, 0.15f, 2.5f, RED));
+            blocks.push_back(new Block(7.25f, -2.0f, 0.15f, 0.3f, GREEN));
+            blocks.push_back(new Block(6.15f, -1.0f, 0.15f, 0.3f, GREEN));
+            blocks.push_back(new Block(-3.9f, 0.4f, 0.75f, 0.4f, GREEN));
+            blocks.push_back(new Block(-6.3f, 1.3f, 0.15f, 2.0f, GREEN));
+            blocks.push_back(new Block(-3.5f, 3.0f, 0.15f, 0.3f, GREEN));
+            
+            goal = new Coin(-2.0f, 3.0f, 0.2f);
+            goal->set_sprite(coin_texture, 1, 1);
+            goal->render(program, model_matrix, 0);
+            
+            if (finished_level)
+            {
+                finished_level = false;
+                startx = -4.5f;
+                starty = -2.5f;
+                player->set_loc(startx, starty);
+                player->reset();
+                player->update_size(-0.1f);
+                
+                for (size_t i = 0; i < enemies.size(); i++)
+                    delete enemies[i];
+                enemies.clear();
+                enemies.push_back(new Enemy(5.75f, -2.5f, 0.25f, 0.25f, DEFINED_PATH, 2.0f, 0.0f, ENEMY1));
+                enemies.push_back(new Enemy(4.5f, -2.5f, 0.25f, 0.25f, DEFINED_PATH, 2.0f, 0.0f, ENEMY1));
+                enemies.push_back(new Enemy(7.0f, -2.5f, 0.25f, 0.25f, DEFINED_PATH, 2.0f, 0.0f, ENEMY1));
+                enemies.push_back(new Enemy(3.0f, 0.0f, 0.35f, 0.35f, DEFINED_PATH, 2.0f, 0.0f, ENEMY2));
+                enemies.push_back(new Enemy(1.5f, 0.0f, 0.35f, 0.35f, DEFINED_PATH, 2.0f, 0.0f, ENEMY2));
+                enemies.push_back(new Enemy(-1.0f, 0.0f, 0.35f, 0.35f, DEFINED_PATH, -2.0f, 0.0f, ENEMY2));
+                enemies.push_back(new Enemy(0.5f, 0.0f, 0.35f, 0.35f, DEFINED_PATH, -2.0f, 0.0f, ENEMY2));
+                
+                for (size_t i = 0; i < growblocks.size(); i++)
+                    delete growblocks[i];
+                growblocks.clear();
+                //growblocks.push_back(new Growblock(-4.0f, -2.0f));
+                //growblocks.push_back(new Growblock(-3.8f, -2.0f));
+                //growblocks.push_back(new Growblock(-3.6f, -2.0f));
+                growblocks.push_back(new Growblock(-3.4f, -2.0f));
+                growblocks.push_back(new Growblock(-3.2f, -2.0f));
+                growblocks.push_back(new Growblock(-3.0f, -2.0f));
+                growblocks.push_back(new Growblock(-2.8f, -2.0f));
+                growblocks.push_back(new Growblock(6.5f, 0.5f));
+            }
             break;
         case LEVEL10:
             // render level 10
@@ -703,7 +749,6 @@ void Platformer::update(float elapsed)
         {
             player->update_size(0.05f);
             growblocks[i]->hit();
-            //growblocks[i]->update_size(-0.1f);
             growblocks[i]->render(program, model_matrix, 0);
         }
     }
@@ -719,29 +764,38 @@ void Platformer::update(float elapsed)
                     case LEVEL4:
                         if (fabs(e->get_original_x() - e->get_pos_x()) > 1.0f)
                             e->switch_direction();
-                        e->move_x(elapsed);
                         break;
                     case LEVEL5:
                         if (fabs(e->get_original_x() - e->get_pos_x()) > 1.0f)
                             e->switch_direction();
-                        e->move_x(elapsed);
                         break;
                     case LEVEL6:
                         if (fabs(e->get_original_x() - e->get_pos_x()) > 2.5f)
                             e->switch_direction();
-                        e->move_x(elapsed);
                         break;
                     case LEVEL7:
                         if (fabs(e->get_original_x() - e->get_pos_x()) > 2.5f)
                             e->switch_direction();
-                        e->move_x(elapsed);
                         break;
                     case LEVEL8:
                         if (fabs(e->get_original_x() - e->get_pos_x()) > 3.25f)
                             e->switch_direction();
-                        e->move_x(elapsed);
+                        break;
+                    case LEVEL9:
+                        if (e->get_channel() == ENEMY1)
+                        {
+                            if (fabs(e->get_original_x() - e->get_pos_x()) > 1.25f)
+                                e->switch_direction();
+                        }
+                        else if (e->get_channel() == ENEMY2)
+                        {
+                            if (fabs(e->get_original_x() - e->get_pos_x()) > 2.5f)
+                                e->switch_direction();
+                        }
+                    default:
                         break;
                 }
+                e->move_x(elapsed);
                 
                 if (player->is_colliding_with(e))
                 {
@@ -826,7 +880,9 @@ void Platformer::update(float elapsed)
                     break;
                 case LEVEL9:
                     finished_level = true;
-                    state = LEVEL10;
+                    //state = LEVEL10;
+                    win = true;
+                    state = GAME_OVER;
                     break;
                 case LEVEL10:
                     finished_level = true;
