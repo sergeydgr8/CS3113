@@ -161,14 +161,7 @@ void Platformer::build_map()
             blocks.push_back(new Block(-2.7f, -0.2f, 0.15f, 0.5f, GREEN));
             blocks.push_back(new Block(0.2f, 0.7f, 0.15f, 0.5f, GREEN));
             blocks.push_back(new Block(3.5f, 1.0f, 0.15f, 0.5f, GREEN));
-            for (Block *b : blocks)
-            {
-                if (b->get_type() == GREEN)
-                    b->set_sprite(green_block_texture, 1, 1);
-                else if (b->get_type() == RED)
-                    b->set_sprite(red_block_texture, 1, 1);
-                b->render(program, model_matrix, 0);
-            }
+
             goal = new Coin(6.5f, 1.5f, 0.2f);
             goal->set_sprite(coin_texture, 1, 1);
             goal->render(program, model_matrix, 0);
@@ -207,17 +200,11 @@ void Platformer::build_map()
             blocks.push_back(new Block(1.5f, -3.0f, 0.15f, 0.5f, RED));
             blocks.push_back(new Block(3.5f, -4.2f, 0.15f, 0.5f, GREEN));
             blocks.push_back(new Block(4.5f, -3.0f, 0.15f, 0.5f, GREEN));
-            for (Block *b : blocks)
-            {
-                if (b->get_type() == GREEN)
-                    b->set_sprite(green_block_texture, 1, 1);
-                else if (b->get_type() == RED)
-                    b->set_sprite(red_block_texture, 1, 1);
-                b->render(program, model_matrix, 0);
-            }
+
             goal = new Coin(3.5f, -0.75f, 0.2f);
             goal->set_sprite(coin_texture, 1, 1);
             goal->render(program, model_matrix, 0);
+            
             if (finished_level)
             {
                 finished_level = false;
@@ -247,14 +234,6 @@ void Platformer::build_map()
             blocks.push_back(new Block(-4.4f, -1.5f, 0.15f, 0.3f, GREEN));
             blocks.push_back(new Block(-4.9f, -3.2f, 0.15f, 0.3f, GREEN));
             blocks.push_back(new Block(-3.0f, -4.2f, 0.15f, 0.3f, GREEN));
-            for (Block *b : blocks)
-            {
-                if (b->get_type() == GREEN)
-                    b->set_sprite(green_block_texture, 1, 1);
-                else if (b->get_type() == RED)
-                    b->set_sprite(red_block_texture, 1, 1);
-                b->render(program, model_matrix, 0);
-            }
             
             goal = new Coin(-1.5f, 4.0f, 0.4f);
             goal->set_sprite(coin_texture, 1, 1);
@@ -279,11 +258,6 @@ void Platformer::build_map()
                 growblocks.push_back(new Growblock(-4.9f, -2.0f));
                 growblocks.push_back(new Growblock(-3.3f, -3.3f));
             }
-            for (Growblock *g : growblocks)
-            {
-                g->set_sprite(growblock_texture, 1, 1);
-                g->render(program, model_matrix, 0);
-            }
             break;
         case LEVEL4:
             blocks.push_back(new Block(-1.5f, 1.75f, 0.4f, 0.75f, GREEN));
@@ -292,15 +266,6 @@ void Platformer::build_map()
             blocks.push_back(new Block(4.0f, -1.8f, 0.15f, 1.5f, GREEN));
             blocks.push_back(new Block(-3.0f, -0.7f, 0.15f, 0.5f, GREEN));
             blocks.push_back(new Block(-5.0f, 1.0f, 0.15f, 0.5f, GREEN));
-            
-            for (Block *b : blocks)
-            {
-                if (b->get_type() == GREEN)
-                    b->set_sprite(green_block_texture, 1, 1);
-                else if (b->get_type() == RED)
-                    b->set_sprite(red_block_texture, 1, 1);
-                b->render(program, model_matrix, 0);
-            }
             
             goal = new Coin(-1.5f, 4.0f, 0.5f);
             goal->set_sprite(coin_texture, 1, 1);
@@ -335,22 +300,6 @@ void Platformer::build_map()
                 growblocks.push_back(new Growblock(4.40f, -0.8f));
                 growblocks.push_back(new Growblock(5.0f, -0.8f));
             }
-            for (Growblock *g : growblocks)
-            {
-                g->set_sprite(growblock_texture, 1, 1);
-                g->render(program, model_matrix, 0);
-            }
-            for (Enemy *e : enemies)
-            {
-                if (e->is_alive())
-                {
-                    e->set_sprite(emojis_texture, 8, 1);
-                    if (e->get_type() == DEFINED_PATH)
-                        e->render(program, model_matrix, 4);
-                    else if (e->get_type() == FOLLOWING)
-                        e->render(program, model_matrix, 6);
-                }
-            }
             break;
         case LEVEL5:
             blocks.push_back(new Block(-5.0f, 1.75f, 0.4f, 0.75f, GREEN));
@@ -360,14 +309,6 @@ void Platformer::build_map()
             blocks.push_back(new Block(4.0f, -2.0f, 2.0f, 0.05f, GREEN));
             blocks.push_back(new Block(5.0f, -2.0f, 2.0f, 0.05f, GREEN));
             blocks.push_back(new Block(4.5f, -1.0f, 1.2f, 0.4f, RED));
-            for (Block *b : blocks)
-            {
-                if (b->get_type() == GREEN)
-                    b->set_sprite(green_block_texture, 1, 1);
-                else if (b->get_type() == RED)
-                    b->set_sprite(red_block_texture, 1, 1);
-                b->render(program, model_matrix, 0);
-            }
             
             goal = new Coin(4.5f, -3.8f, 0.05f);
             goal->set_sprite(coin_texture, 1, 1);
@@ -402,24 +343,6 @@ void Platformer::build_map()
                 growblocks.push_back(new Growblock(1.95f, -0.5f));
                 growblocks.push_back(new Growblock(2.65f, -0.5f));
             }
-            
-            for (Growblock *g : growblocks)
-            {
-                g->set_sprite(growblock_texture, 1, 1);
-                g->render(program, model_matrix, 0);
-            }
-            for (Enemy *e : enemies)
-            {
-                if (e->is_alive())
-                {
-                    e->set_sprite(emojis_texture, 8, 1);
-                    if (e->get_type() == DEFINED_PATH)
-                        e->render(program, model_matrix, 4);
-                    else if (e->get_type() == FOLLOWING)
-                        e->render(program, model_matrix, 6);
-                }
-            }
-            
             break;
         case LEVEL6:
             // render level 6
@@ -438,6 +361,30 @@ void Platformer::build_map()
             break;
         default:
             break;
+    }
+    for (Block *b : blocks)
+    {
+        if (b->get_type() == GREEN)
+            b->set_sprite(green_block_texture, 1, 1);
+        else if (b->get_type() == RED)
+            b->set_sprite(red_block_texture, 1, 1);
+        b->render(program, model_matrix, 0);
+    }
+    for (Growblock *g : growblocks)
+    {
+        g->set_sprite(growblock_texture, 1, 1);
+        g->render(program, model_matrix, 0);
+    }
+    for (Enemy *e : enemies)
+    {
+        if (e->is_alive())
+        {
+            e->set_sprite(emojis_texture, 8, 1);
+            if (e->get_type() == DEFINED_PATH)
+                e->render(program, model_matrix, 4);
+            else if (e->get_type() == FOLLOWING)
+                e->render(program, model_matrix, 6);
+        }
     }
 }
 
