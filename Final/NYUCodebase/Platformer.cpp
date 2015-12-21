@@ -148,7 +148,6 @@ void Platformer::render_game_over_screen()
 // TODO: Build all the levels
 void Platformer::build_map()
 {
-    // clear out all the blocks and enemies to create new level
     for (size_t i = 0; i < blocks.size(); i++)
         delete blocks[i];
     blocks.clear();
@@ -354,7 +353,73 @@ void Platformer::build_map()
             }
             break;
         case LEVEL5:
-            // render level 5
+            blocks.push_back(new Block(-5.0f, 1.75f, 0.4f, 0.75f, GREEN));
+            blocks.push_back(new Block(-2.0f, -3.5f, 0.15f, 1.5f, RED));
+            blocks.push_back(new Block(-1.5f, -3.2f, 0.15f, 0.3f, GREEN));
+            blocks.push_back(new Block(1.25f, -1.5f, 0.15f, 1.5f, GREEN));
+            blocks.push_back(new Block(4.0f, -2.0f, 2.0f, 0.05f, GREEN));
+            blocks.push_back(new Block(5.0f, -2.0f, 2.0f, 0.05f, GREEN));
+            blocks.push_back(new Block(4.5f, -1.0f, 1.2f, 0.4f, RED));
+            for (Block *b : blocks)
+            {
+                if (b->get_type() == GREEN)
+                    b->set_sprite(green_block_texture, 1, 1);
+                else if (b->get_type() == RED)
+                    b->set_sprite(red_block_texture, 1, 1);
+                b->render(program, model_matrix, 0);
+            }
+            
+            goal = new Coin(4.5f, -3.8f, 0.05f);
+            goal->set_sprite(coin_texture, 1, 1);
+            goal->render(program, model_matrix, 0);
+            
+            if (finished_level)
+            {
+                finished_level = false;
+                startx = -5.0f;
+                starty = 2.9f;
+                player->set_loc(startx, starty);
+                player->reset();
+                player->update_size(-0.1f);
+                
+                for (size_t i = 0; i < enemies.size(); i++)
+                    delete enemies[i];
+                enemies.clear();
+                enemies.push_back(new Enemy(-2.0f, -1.5f, 0.35f, 0.35f, DEFINED_PATH, 2.0f, 0.0f));
+                enemies.push_back(new Enemy(1.25f, -0.5f, 0.5f, 0.5f, DEFINED_PATH, 2.0f, 0.0f));
+                
+                for (size_t i = 0; i < growblocks.size(); i++)
+                    delete growblocks[i];
+                growblocks.clear();
+                growblocks.push_back(new Growblock(-3.25f, -1.5f));
+                growblocks.push_back(new Growblock(-2.65f, -1.5f));
+                growblocks.push_back(new Growblock(-2.05f, -1.5f));
+                growblocks.push_back(new Growblock(-1.45f, -1.5f));
+                growblocks.push_back(new Growblock(-0.85f, -1.5f));
+                growblocks.push_back(new Growblock(-0.15f, -0.5f));
+                growblocks.push_back(new Growblock(0.55f, -0.5f));
+                growblocks.push_back(new Growblock(1.25f, -0.5f));
+                growblocks.push_back(new Growblock(1.95f, -0.5f));
+                growblocks.push_back(new Growblock(2.65f, -0.5f));
+            }
+            
+            for (Growblock *g : growblocks)
+            {
+                g->set_sprite(growblock_texture, 1, 1);
+                g->render(program, model_matrix, 0);
+            }
+            for (Enemy *e : enemies)
+            {
+                if (e->is_alive())
+                {
+                    e->set_sprite(emojis_texture, 8, 1);
+                    if (e->get_type() == DEFINED_PATH)
+                        e->render(program, model_matrix, 4);
+                    else if (e->get_type() == FOLLOWING)
+                        e->render(program, model_matrix, 6);
+                }
+            }
+            
             break;
         case LEVEL6:
             // render level 6
@@ -579,6 +644,11 @@ void Platformer::update(float elapsed)
                             e->switch_direction();
                         e->move_x(elapsed);
                         break;
+                    case LEVEL5:
+                        if (fabs(e->get_original_x() - e->get_pos_x()) > 1.0f)
+                            e->switch_direction();
+                        e->move_x(elapsed);
+                        break;
                 }
                 
                 if (player->is_colliding_with(e))
@@ -604,7 +674,6 @@ void Platformer::update(float elapsed)
             }
         }
     }
-    if (time_elapsed_for_enemies >= 3.3f) time_elapsed_for_enemies = 0.0f;
 
     if (player->is_colliding_on_y_with(goal) || player->is_colliding_on_x_with(goal))
     {

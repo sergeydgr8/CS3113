@@ -289,7 +289,6 @@ Enemy::Enemy(float x, float y, float ht, float wd, ENEMY_TYPE tp, float vx, floa
     velocity_x = vx;
     velocity_y = vy;
     alive = true;
-    times_switched = 0;
 }
 
 void Enemy::move(float vx, float vy)
@@ -317,17 +316,11 @@ void Enemy::switch_direction()
 {
     velocity_x *= -1;
     velocity_y *= -1;
-    times_switched++;
 }
 
 void Enemy::move_x(float elapsed)
 {
     pos_x += velocity_x * elapsed;
-}
-
-int Enemy::get_times_switched()
-{
-    return times_switched;
 }
 
 float Enemy::get_original_x()

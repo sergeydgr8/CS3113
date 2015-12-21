@@ -78,7 +78,6 @@ class Enemy : public Entity
 private:
     ENEMY_TYPE type;
     bool alive;
-    int times_switched;
     float original_x;
     float original_y;
 public:
@@ -90,7 +89,6 @@ public:
     void die();
     void switch_direction();
     void move_x(float elapsed);
-    int get_times_switched();
     float get_original_x();
     float get_original_y();
 };
