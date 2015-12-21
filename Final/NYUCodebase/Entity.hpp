@@ -91,6 +91,7 @@ public:
     void move_x(float elapsed);
     float get_original_x();
     float get_original_y();
+    void move_towards(Entity *e, float elapsed);
 };
 
 enum BLOCK_TYPE

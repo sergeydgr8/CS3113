@@ -22,6 +22,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <math.h>
 
 #ifdef _WINDOWS
 #define RESOURCE_FOLDER ""
