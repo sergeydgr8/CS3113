@@ -315,9 +315,13 @@ void Platformer::build_map()
                 player->set_loc(startx, starty);
                 player->reset();
                 player->update_size(-0.1f);
+                
                 for (size_t i = 0; i < enemies.size(); i++)
                     delete enemies[i];
                 enemies.clear();
+                enemies.push_back(new Enemy(1.0f, -1.4f, 0.35f, 0.35f, DEFINED_PATH, 2.0f, 0.0f));
+                enemies.push_back(new Enemy(4.0f, -0.8f, 0.55f, 0.55f, DEFINED_PATH, 2.0f, 0.0f));
+                
                 for (size_t i = 0; i < growblocks.size(); i++)
                     delete growblocks[i];
                 growblocks.clear();
@@ -336,6 +340,17 @@ void Platformer::build_map()
             {
                 g->set_sprite(growblock_texture, 1, 1);
                 g->render(program, model_matrix, 0);
+            }
+            for (Enemy *e : enemies)
+            {
+                if (e->is_alive())
+                {
+                    e->set_sprite(emojis_texture, 8, 1);
+                    if (e->get_type() == DEFINED_PATH)
+                        e->render(program, model_matrix, 4);
+                    else if (e->get_type() == FOLLOWING)
+                        e->render(program, model_matrix, 6);
+                }
             }
             break;
         case LEVEL5:
@@ -550,6 +565,46 @@ void Platformer::update(float elapsed)
             growblocks[i]->render(program, model_matrix, 0);
         }
     }
+    
+    for (Enemy *e : enemies)
+    {
+        if (e->is_alive())
+        {
+            if (e->get_type() == DEFINED_PATH)
+            {
+                switch (state)
+                {
+                    case LEVEL4:
+                        if (fabs(e->get_original_x() - e->get_pos_x()) > 1.0f)
+                            e->switch_direction();
+                        e->move_x(elapsed);
+                        break;
+                }
+                
+                if (player->is_colliding_with(e))
+                {
+                    if (player->get_height() >= e->get_height())
+                        e->die();
+                    else
+                    {
+                        if (lives > 1)
+                        {
+                            lives -= 1;
+                            player->reset();
+                            player->set_loc(startx, starty);
+                            finished_level = true;
+                        }
+                        else
+                        {
+                            lives = 6;
+                            state = GAME_OVER;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (time_elapsed_for_enemies >= 3.3f) time_elapsed_for_enemies = 0.0f;
 
     if (player->is_colliding_on_y_with(goal) || player->is_colliding_on_x_with(goal))
     {

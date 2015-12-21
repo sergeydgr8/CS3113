@@ -77,11 +77,22 @@ class Enemy : public Entity
 {
 private:
     ENEMY_TYPE type;
+    bool alive;
+    int times_switched;
+    float original_x;
+    float original_y;
 public:
     Enemy();
     Enemy(float x, float y, float ht, float wd, ENEMY_TYPE tp, float vx = 0.0f, float vy = 0.0f);
     void move(float vx, float vy);
     ENEMY_TYPE get_type();
+    bool is_alive();
+    void die();
+    void switch_direction();
+    void move_x(float elapsed);
+    int get_times_switched();
+    float get_original_x();
+    float get_original_y();
 };
 
 enum BLOCK_TYPE

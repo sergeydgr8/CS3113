@@ -38,6 +38,8 @@ private:
     int lives;
     float startx;
     float starty;
+    float time_elapsed_for_enemies = 0.0f;
+    int times_switched = 0;
     
     GameState state;
     

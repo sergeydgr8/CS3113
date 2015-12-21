@@ -281,11 +281,15 @@ Enemy::Enemy(float x, float y, float ht, float wd, ENEMY_TYPE tp, float vx, floa
 {
     pos_x = x;
     pos_y = y;
+    original_x = x;
+    original_y = y;
     height = ht;
     width = wd;
     type = tp;
     velocity_x = vx;
     velocity_y = vy;
+    alive = true;
+    times_switched = 0;
 }
 
 void Enemy::move(float vx, float vy)
@@ -297,6 +301,43 @@ void Enemy::move(float vx, float vy)
 ENEMY_TYPE Enemy::get_type()
 {
     return type;
+}
+
+bool Enemy::is_alive()
+{
+    return alive;
+}
+
+void Enemy::die()
+{
+    alive = false;
+}
+
+void Enemy::switch_direction()
+{
+    velocity_x *= -1;
+    velocity_y *= -1;
+    times_switched++;
+}
+
+void Enemy::move_x(float elapsed)
+{
+    pos_x += velocity_x * elapsed;
+}
+
+int Enemy::get_times_switched()
+{
+    return times_switched;
+}
+
+float Enemy::get_original_x()
+{
+    return original_x;
+}
+
+float Enemy::get_original_y()
+{
+    return original_y;
 }
 
 //
