@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYUCodebase/Platformer.cpp"
-            timestampString = "472389193.345726"
+            timestampString = "472392032.55282"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "760"
-            endingLineNumber = "760"
+            startingLineNumber = "780"
+            endingLineNumber = "780"
             landmarkName = "Platformer::update(float elapsed)"
             landmarkType = "5">
          </BreakpointContent>

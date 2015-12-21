@@ -16,6 +16,14 @@ Platformer::Platformer()
     player = new Entity(startx, starty, 0.25f, 0.25f, 0.0f, 0.0f, 0.0f, 0.0f, 5.0f);
     player->set_sprite(emojis_texture, 8.0f, 1.0f);
     lives = 5;
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
+    hit = Mix_LoadWAV(RESOURCE_FOLDER"hit.wav");
+    kill = Mix_LoadWAV(RESOURCE_FOLDER"kill.wav");
+    die = Mix_LoadWAV(RESOURCE_FOLDER"die.wav");
+    jump = Mix_LoadWAV(RESOURCE_FOLDER"jump.wav");
+    coin = Mix_LoadWAV(RESOURCE_FOLDER"coin.wav");
+    music = Mix_LoadMUS(RESOURCE_FOLDER"music.wav");
+    Mix_PlayMusic(music, -1);
 }
 
 Platformer::~Platformer()
@@ -27,6 +35,12 @@ Platformer::~Platformer()
     for (size_t i = 0; i < enemies.size(); i++)
         delete enemies[i];
     enemies.clear();
+    Mix_FreeChunk(hit);
+    Mix_FreeChunk(kill);
+    Mix_FreeChunk(die);
+    Mix_FreeChunk(jump);
+    Mix_FreeChunk(coin);
+    Mix_FreeMusic(music);
     SDL_Quit();
 }
 
@@ -677,7 +691,10 @@ void Platformer::process_events()
                         state = TITLE_SCREEN;
                     if (event.key.keysym.scancode == SDL_SCANCODE_UP)
                         if (!player->has_jumped())
+                        {
                             player->jump();
+                            Mix_PlayChannel(-1, jump, 0);
+                        }
                 }
                 if (keys[SDL_SCANCODE_LEFT])
                     player->move(-7.5f);
@@ -717,7 +734,9 @@ void Platformer::update(float elapsed)
         if (player->is_colliding_on_y_with(b))
         {
             if (b->get_type() == GREEN)
+            {
                 player->bounce_off_of(b);
+            }
             else if (b->get_type() == RED)
             {
                 player->update_size(-0.001f);
@@ -750,6 +769,7 @@ void Platformer::update(float elapsed)
             player->update_size(0.05f);
             growblocks[i]->hit();
             growblocks[i]->render(program, model_matrix, 0);
+            Mix_PlayChannel(-1, hit, 0);
         }
     }
     
@@ -800,7 +820,10 @@ void Platformer::update(float elapsed)
                 if (player->is_colliding_with(e))
                 {
                     if (player->get_height() >= e->get_height())
+                    {
                         e->die();
+                        Mix_PlayChannel(-1, kill, 0);
+                    }
                     else
                     {
                         if (lives > 1)
@@ -815,6 +838,7 @@ void Platformer::update(float elapsed)
                             lives = 6;
                             state = GAME_OVER;
                         }
+                        Mix_PlayChannel(-1, die, 0);
                     }
                 }
             }
@@ -835,6 +859,7 @@ void Platformer::update(float elapsed)
                         lives = 6;
                         state = GAME_OVER;
                     }
+                    Mix_PlayChannel(-1, die, 0);
                 }
             }
         }
@@ -844,6 +869,7 @@ void Platformer::update(float elapsed)
     {
         if (player->get_height() >= goal->get_height())
         {
+            Mix_PlayChannel(-1, coin, 0);
             switch (state)
             {
                 case LEVEL1:
@@ -907,6 +933,7 @@ void Platformer::update(float elapsed)
                 lives = 6;
                 state = GAME_OVER;
             }
+            Mix_PlayChannel(-1, die, 0);
         }
     }
     
@@ -924,6 +951,7 @@ void Platformer::update(float elapsed)
             lives = 6;
             state = GAME_OVER;
         }
+        Mix_PlayChannel(-1, die, 0);
     }
     
     if (player->get_height() <= 0 || player->get_width() <= 0)
@@ -939,6 +967,25 @@ void Platformer::update(float elapsed)
         {
             lives = 6;
             state = GAME_OVER;
+        }
+        Mix_PlayChannel(-1, die, 0);
+    }
+    
+    animation_elapsed += elapsed;
+    if (current_anim_index == 0)
+    {
+        if (animation_elapsed > 2.0f)
+        {
+            current_anim_index = 2;
+            animation_elapsed = 0.0f;
+        }
+    }
+    else if (current_anim_index == 2)
+    {
+        if (animation_elapsed > 0.25f)
+        {
+            current_anim_index = 0;
+            animation_elapsed = 0.0f;
         }
     }
 }
@@ -965,7 +1012,7 @@ void Platformer::render()
         else
         {
             build_map();
-            player->render(program, model_matrix, 0);
+            player->render(program, model_matrix, current_anim_index);
             model_matrix.identity();
             model_matrix.Translate(-7.75f, 4.20f, 0.0f);
             program->setModelMatrix(model_matrix);
